@@ -2,7 +2,6 @@ package org.ships;
 
 public class Map {
 
-
     public String drawMap(Matrix matrix) {
 
         StringBuilder sb = new StringBuilder();
