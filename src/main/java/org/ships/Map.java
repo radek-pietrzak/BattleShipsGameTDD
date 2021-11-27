@@ -2,9 +2,6 @@ package org.ships;
 
 public class Map {
 
-    private Matrix matrixAlly = new Matrix();
-    private Matrix matrixEnemy = new Matrix();
-
     public String drawMaps(Matrix matrixAlly, Matrix matrixEnemy) {
 
         StringBuilder sb = new StringBuilder();

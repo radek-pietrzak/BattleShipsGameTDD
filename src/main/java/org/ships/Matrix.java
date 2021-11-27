@@ -21,12 +21,58 @@ public class Matrix {
         return matrix;
     }
 
-    public void addToMatrix(String position) {
+    public void addShipToMatrix(Ship ship, String position) {
 
+        Vector vector = ship.getVector();
+        ShipType shipType = ship.getShipType();
+        String typeSymbol;
+        int shipLength;
+
+        switch (shipType) {
+            case PATROL_BOAT -> {
+                typeSymbol = "P";
+                shipLength = 2;
+                addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
+            }
+            case SUBMARINE -> {
+                typeSymbol = "S";
+                shipLength = 3;
+                addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
+            }
+            case DESTROYER -> {
+                typeSymbol = "D";
+                shipLength = 3;
+                addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
+            }
+            case BATTLESHIP -> {
+                typeSymbol = "B";
+                shipLength = 4;
+                addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
+            }
+            case CARRIER -> {
+                typeSymbol = "C";
+                shipLength = 5;
+                addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
+            }
+
+
+        }
+
+    }
+
+    private void addSymbolsToMatrix(Vector vector, String position, String typeSymbol, int shipLength) {
         int x = getFirstNumberFromPosition(position);
         int y = getSecondNumberFromPosition(position);
 
-        matrix[y][x] = "X";
+        for (int i = 0; i < shipLength; i++) {
+
+            switch (vector) {
+                case NORTH -> matrix[y - i][x] = typeSymbol;
+                case SOUTH -> matrix[y + i][x] = typeSymbol;
+                case WEST -> matrix[y][x - i] = typeSymbol;
+                case EAST -> matrix[y][x + i] = typeSymbol;
+            }
+        }
     }
 
     private int getFirstNumberFromPosition(String position) {
