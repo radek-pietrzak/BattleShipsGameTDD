@@ -21,10 +21,16 @@ public class Matrix {
         return matrix;
     }
 
-    public void addShipToMatrix(Ship ship, String position) {
+    public String addShipToMatrix(Ship ship, String position) {
 
         Vector vector = ship.getVector();
         ShipType shipType = ship.getShipType();
+
+        return recognizeAndFindPlaceToShip(position, vector, shipType);
+
+    }
+
+    private String recognizeAndFindPlaceToShip(String position, Vector vector, ShipType shipType) {
         String typeSymbol;
         int shipLength;
 
@@ -32,47 +38,73 @@ public class Matrix {
             case PATROL_BOAT -> {
                 typeSymbol = "P";
                 shipLength = 2;
-                addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
+                return addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
             }
             case SUBMARINE -> {
                 typeSymbol = "S";
                 shipLength = 3;
-                addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
+                return addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
             }
             case DESTROYER -> {
                 typeSymbol = "D";
                 shipLength = 3;
-                addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
+                return addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
             }
             case BATTLESHIP -> {
                 typeSymbol = "B";
                 shipLength = 4;
-                addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
+                return addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
             }
             case CARRIER -> {
                 typeSymbol = "C";
                 shipLength = 5;
-                addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
+                return addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
             }
-
-
         }
-
+        return "recognizeAndFindPlaceToShip failed";
     }
 
-    private void addSymbolsToMatrix(Vector vector, String position, String typeSymbol, int shipLength) {
+    private String addSymbolsToMatrix(Vector vector, String position, String typeSymbol, int shipLength) {
         int x = getFirstNumberFromPosition(position);
         int y = getSecondNumberFromPosition(position);
 
         for (int i = 0; i < shipLength; i++) {
 
             switch (vector) {
-                case NORTH -> matrix[y - i][x] = typeSymbol;
-                case SOUTH -> matrix[y + i][x] = typeSymbol;
-                case WEST -> matrix[y][x - i] = typeSymbol;
-                case EAST -> matrix[y][x + i] = typeSymbol;
+
+                case NORTH -> {
+                    y -= i;
+                    if (y < 0)
+                        return "Bad placement of the ship.";
+
+                    matrix[y][x] = typeSymbol;
+                }
+
+                case SOUTH -> {
+                    y += i;
+                    if (y > 9)
+                        return "Bad placement of the ship.";
+
+                    matrix[y][x] = typeSymbol;
+                }
+
+                case WEST -> {
+                    x -= i;
+                    if (x < 0)
+                        return "Bad placement of the ship.";
+
+                    matrix[y][x] = typeSymbol;
+                }
+                case EAST -> {
+                    x += i;
+                    if (x > 9)
+                        return "Bad placement of the ship.";
+
+                    matrix[y][x] = typeSymbol;
+                }
             }
         }
+        return "Ship added.";
     }
 
     private int getFirstNumberFromPosition(String position) {

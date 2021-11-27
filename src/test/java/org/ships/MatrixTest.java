@@ -48,4 +48,32 @@ class MatrixTest {
         assertEquals(Arrays.deepToString(result), Arrays.deepToString(matrix.getMatrix()));
     }
 
+    @Test
+    void shouldReturnInfoIfBadPlacementOfShip(){
+
+        //given
+        String result = "Bad placement of the ship.";
+        Ship ship = new Ship(ShipType.BATTLESHIP, Vector.WEST);
+        String position = "a1";
+
+        //when
+        //then
+        assertEquals(result, matrix.addShipToMatrix(ship, position));
+
+    }
+
+    @Test
+    void shouldReturnInfoIfGoodPlacementOfShip(){
+
+        //given
+        String result = "Ship added.";
+        Ship ship = new Ship(ShipType.BATTLESHIP, Vector.EAST);
+        String position = "a1";
+
+        //when
+        //then
+        assertEquals(result, matrix.addShipToMatrix(ship, position));
+
+    }
+
 }
