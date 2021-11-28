@@ -26,8 +26,32 @@ public class Matrix {
         Vector vector = ship.getVector();
         ShipType shipType = ship.getShipType();
 
+        if (!positionIsValid(position)) {
+            return "Incorrect position";
+        }
+
         return recognizeAndFindPlaceToShip(position, vector, shipType);
 
+    }
+
+    private boolean positionIsValid(String position) {
+
+        if (position.length() < 2 || position.length() > 3)
+            return false;
+
+
+        if(!position.toLowerCase(Locale.ROOT).substring(0, 1).matches("[a-j]"))
+            return false;
+
+        boolean isXAxisValid;
+
+        if (position.length() == 3)
+            isXAxisValid = position.substring(1, 3).matches("[10]");
+        else
+            isXAxisValid = position.substring(1, 2).matches("[1-9]");
+
+
+        return isXAxisValid;
     }
 
     private String recognizeAndFindPlaceToShip(String position, Vector vector, ShipType shipType) {

@@ -112,4 +112,25 @@ class MatrixTest {
 
     }
 
+    @Test
+    void shouldReturnInfoBadIncorrectPosition(){
+
+        //given
+        String result = "Incorrect position";
+        Ship carrier = new Ship(ShipType.CARRIER, Vector.EAST);
+
+        //when
+        //then
+        assertEquals(result, matrix.addShipToMatrix(carrier, "x5"));
+        assertEquals(result, matrix.addShipToMatrix(carrier, "10"));
+        assertEquals(result, matrix.addShipToMatrix(carrier, "abc"));
+        assertEquals(result, matrix.addShipToMatrix(carrier, ""));
+        assertEquals(result, matrix.addShipToMatrix(carrier, "6"));
+        assertEquals(result, matrix.addShipToMatrix(carrier, "92"));
+        assertEquals(result, matrix.addShipToMatrix(carrier, "110"));
+        assertEquals(result, matrix.addShipToMatrix(carrier, "b11"));
+        assertEquals(result, matrix.addShipToMatrix(carrier, "b111"));
+
+    }
+
 }
