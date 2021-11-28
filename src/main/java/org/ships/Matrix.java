@@ -65,38 +65,47 @@ public class Matrix {
     }
 
     private String addSymbolsToMatrix(Vector vector, String position, String typeSymbol, int shipLength) {
+
         int x = getFirstNumberFromPosition(position);
         int y = getSecondNumberFromPosition(position);
 
-        for (int i = 0; i < shipLength; i++) {
+        matrix[y][x] = typeSymbol;
 
-            switch (vector) {
+        switch (vector) {
 
-                case NORTH -> {
-                    y -= i;
+            case NORTH -> {
+                for (int i = 1; i < shipLength; i++) {
+                    y -= 1;
                     if (y < 0)
                         return "Bad placement of the ship.";
 
                     matrix[y][x] = typeSymbol;
                 }
+            }
 
-                case SOUTH -> {
-                    y += i;
+            case SOUTH -> {
+                for (int i = 1; i < shipLength; i++) {
+                    y += 1;
                     if (y > 9)
                         return "Bad placement of the ship.";
 
                     matrix[y][x] = typeSymbol;
                 }
+            }
 
-                case WEST -> {
-                    x -= i;
+            case WEST -> {
+                for (int i = 1; i < shipLength; i++) {
+                    x -= 1;
                     if (x < 0)
                         return "Bad placement of the ship.";
 
                     matrix[y][x] = typeSymbol;
                 }
-                case EAST -> {
-                    x += i;
+            }
+
+            case EAST -> {
+                for (int i = 1; i < shipLength; i++) {
+                    x += 1;
                     if (x > 9)
                         return "Bad placement of the ship.";
 
@@ -104,6 +113,7 @@ public class Matrix {
                 }
             }
         }
+
         return "Ship added.";
     }
 
