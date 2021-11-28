@@ -26,7 +26,7 @@ public class Map {
 
             for (int k = 0; k < 10; k++) {
                 sb.append("|");
-                sb.append(matrixEnemy.getMatrix()[k][i]);
+                sb.append(matrixEnemy.getMatrix()[i][k]);
             }
 
             sb.append("|\r\n");

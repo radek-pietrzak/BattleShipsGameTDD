@@ -33,7 +33,7 @@ class MapTest {
     }
 
     @Test
-    void shouldDrawMapAccordingToMatrix() {
+    void shouldDrawMapsAccordingToMatrix() {
 
         //given
         Matrix matrixAlly = new Matrix();

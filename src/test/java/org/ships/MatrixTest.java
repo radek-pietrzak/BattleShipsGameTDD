@@ -54,7 +54,7 @@ class MatrixTest {
     }
 
     @TestFactory
-    Collection<DynamicTest> shouldReturnInfoIfBadPlacementOfShip(){
+    Collection<DynamicTest> shouldReturnInfoIfBadPlacementOfShip() {
 
         //given
         String result = "Bad placement of the ship.";
@@ -71,13 +71,13 @@ class MatrixTest {
 
         //when
         //then
-        Executable execCarrier = ()-> assertEquals(result, matrix.addShipToMatrix(carrier, "g3"));
-        Executable execBattleship = ()-> assertEquals(result, matrix.addShipToMatrix(battleship, "a3"));
-        Executable execSubmarine = ()-> assertEquals(result, matrix.addShipToMatrix(submarine, "b5"));
-        Executable execDestroyer = ()-> assertEquals(result, matrix.addShipToMatrix(destroyer, "h10"));
-        Executable execPatrol1 = ()-> assertEquals(result, matrix.addShipToMatrix(patrolBoat1, "a10"));
-        Executable execPatrol2 = ()-> assertEquals(result, matrix.addShipToMatrix(patrolBoat2, "c1"));
-        Executable execPatrol3 = ()-> assertEquals(result, matrix.addShipToMatrix(patrolBoat3, "j5"));
+        Executable execCarrier = () -> assertEquals(result, matrix.addShipToMatrix(carrier, "g3"));
+        Executable execBattleship = () -> assertEquals(result, matrix.addShipToMatrix(battleship, "a3"));
+        Executable execSubmarine = () -> assertEquals(result, matrix.addShipToMatrix(submarine, "b5"));
+        Executable execDestroyer = () -> assertEquals(result, matrix.addShipToMatrix(destroyer, "h10"));
+        Executable execPatrol1 = () -> assertEquals(result, matrix.addShipToMatrix(patrolBoat1, "a10"));
+        Executable execPatrol2 = () -> assertEquals(result, matrix.addShipToMatrix(patrolBoat2, "c1"));
+        Executable execPatrol3 = () -> assertEquals(result, matrix.addShipToMatrix(patrolBoat3, "j5"));
 
         DynamicTest testCarrier = DynamicTest.dynamicTest("carrier", execCarrier);
         DynamicTest testBattleship = DynamicTest.dynamicTest("battleship", execBattleship);
@@ -99,7 +99,7 @@ class MatrixTest {
     }
 
     @Test
-    void shouldReturnInfoIfGoodPlacementOfShip(){
+    void shouldReturnInfoIfGoodPlacementOfShip() {
 
         //given
         String result = "Ship added.";
@@ -113,7 +113,7 @@ class MatrixTest {
     }
 
     @Test
-    void shouldReturnInfoBadIncorrectPosition(){
+    void shouldReturnInfoBadIncorrectPosition() {
 
         //given
         String result = "Incorrect position";
@@ -130,6 +130,72 @@ class MatrixTest {
         assertEquals(result, matrix.addShipToMatrix(carrier, "110"));
         assertEquals(result, matrix.addShipToMatrix(carrier, "b11"));
         assertEquals(result, matrix.addShipToMatrix(carrier, "b111"));
+
+    }
+
+    @Test
+    void shouldProvideShootPositionToMatrix() {
+
+        //given
+        String[][] result = {
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", ".", " ", ".", " ", " ", " ", " ", " ", " ",},
+                {" ", ".", " ", ".", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", ".", " ", " ", " ", ".", ".", ".",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", ".", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", ".", " ", " ", " ", " ", " ", " ",}
+        };
+
+        //when
+        matrix.shootPosition("b2");
+        matrix.shootPosition("b3");
+
+        matrix.shootPosition("d2");
+        matrix.shootPosition("d3");
+        matrix.shootPosition("d4");
+
+        matrix.shootPosition("h4");
+        matrix.shootPosition("i4");
+        matrix.shootPosition("j4");
+
+        matrix.shootPosition("d9");
+        matrix.shootPosition("d10");
+
+        //then
+        assertEquals(Arrays.deepToString(result), Arrays.deepToString(matrix.getMatrix()));
+
+
+    }
+
+    @Test
+    void shouldGetInfoIfShotIsValid() {
+
+        //given
+        String result = "Shoot!!";
+
+        //when
+        //then
+        assertEquals(result, matrix.shootPosition("b1"));
+        assertEquals(result, matrix.shootPosition("a10"));
+        assertEquals(result, matrix.shootPosition("g5"));
+
+    }
+
+    @Test
+    void shouldGetInfoIfShotIsNotValid() {
+
+        //given
+        String result = "Incorrect position";
+
+        //when
+        //then
+        assertEquals(result, matrix.shootPosition("a11"));
+        assertEquals(result, matrix.shootPosition("x6"));
+        assertEquals(result, matrix.shootPosition("y12"));
 
     }
 

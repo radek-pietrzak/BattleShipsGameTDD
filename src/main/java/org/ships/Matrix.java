@@ -33,13 +33,26 @@ public class Matrix {
 
     }
 
+    public String shootPosition(String position) {
+
+        if (!positionIsValid(position))
+            return "Incorrect position";
+
+        int x = getFirstNumberFromPosition(position);
+        int y = getSecondNumberFromPosition(position);
+
+        matrix[y][x] = ".";
+
+        return "Shoot!!";
+    }
+
     private boolean positionIsValid(String position) {
 
         if (position.length() < 2 || position.length() > 3)
             return false;
 
 
-        if(!position.toLowerCase(Locale.ROOT).substring(0, 1).matches("[a-j]"))
+        if (!position.toLowerCase(Locale.ROOT).substring(0, 1).matches("[a-j]"))
             return false;
 
         boolean isXAxisValid;
@@ -167,5 +180,7 @@ public class Matrix {
             return Integer.parseInt(position.substring(1, 3)) - 1;
 
     }
+
+
 }
 
