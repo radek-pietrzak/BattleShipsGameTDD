@@ -16,7 +16,7 @@ public class Map {
 
             for (int j = 0; j < 10; j++) {
                 sb.append("|");
-                sb.append(matrixAlly.getMatrix()[j][i]);
+                sb.append(matrixAlly.getMatrix()[i][j]);
             }
 
             sb.append("|  ");

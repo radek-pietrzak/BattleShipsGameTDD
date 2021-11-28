@@ -23,12 +23,11 @@ public class Matrix {
 
     public String addShipToMatrix(Ship ship, String position) {
 
+        if (!positionIsValid(position))
+            return "Incorrect position";
+
         Vector vector = ship.getVector();
         ShipType shipType = ship.getShipType();
-
-        if (!positionIsValid(position)) {
-            return "Incorrect position";
-        }
 
         return recognizeAndFindPlaceToShip(position, vector, shipType);
 
@@ -46,7 +45,7 @@ public class Matrix {
         boolean isXAxisValid;
 
         if (position.length() == 3)
-            isXAxisValid = position.substring(1, 3).matches("[10]");
+            isXAxisValid = position.startsWith("10", 1);
         else
             isXAxisValid = position.substring(1, 2).matches("[1-9]");
 
