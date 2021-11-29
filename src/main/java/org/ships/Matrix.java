@@ -1,6 +1,8 @@
 package org.ships;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Matrix {
 
@@ -21,21 +23,78 @@ public class Matrix {
         return matrix;
     }
 
-    public String addShipToMatrix(Ship ship, String position) {
+    public String addShipToMatrix(Ship ship, String coordinates) {
 
-        if (!positionIsValid(position))
-            return "Incorrect position";
+        if (isPositionNotValid(coordinates))
+            return "Incorrect coordinates";
 
-        Vector vector = ship.getVector();
-        ShipType shipType = ship.getShipType();
+        List<String> encodedShip = Ship.encodeShipToCoordinates(ship, coordinates);
 
-        return recognizeAndFindPlaceToShip(position, vector, shipType);
+        if (shipIsNotInBounds(encodedShip))
+            return "Ship out of bounds.";
 
+        if (shipIsOnAnotherShip(encodedShip))
+            return "Ship on another.";
+
+        encodedShip.forEach(c -> {
+            String type = c.substring(0, 1);
+            int dot = c.indexOf('.');
+            int comma = c.indexOf(',');
+            int x = Integer.parseInt(c.substring(dot + 1, comma));
+            int y = Integer.parseInt(c.substring(comma + 1));
+
+            matrix[y][x] = type;
+
+        });
+
+        return "Ship added.";
+
+    }
+
+
+    private boolean shipIsNotInBounds(List<String> encodedShip) {
+
+        AtomicBoolean result = new AtomicBoolean(false);
+
+        encodedShip.forEach(c -> {
+            int dot = c.indexOf('.');
+            int comma = c.indexOf(',');
+            int x = Integer.parseInt(c.substring(dot + 1, comma));
+            int y = Integer.parseInt(c.substring(comma + 1));
+
+            if (x < 0 || x > 9 || y < 0 || y > 9)
+                result.set(true);
+
+        });
+
+        return result.get();
+    }
+
+    private boolean shipIsOnAnotherShip(List<String> encodedShip) {
+
+        AtomicBoolean result = new AtomicBoolean(false);
+
+        encodedShip.forEach(c -> {
+            int dot = c.indexOf('.');
+            int comma = c.indexOf(',');
+            int x = Integer.parseInt(c.substring(dot + 1, comma));
+            int y = Integer.parseInt(c.substring(comma + 1));
+
+            if (areCoordinatesOccupied(getMatrix()[y][x]))
+                result.set(true);
+
+        });
+
+        return result.get();
+    }
+
+    private boolean areCoordinatesOccupied(String m) {
+        return m.equals("C") || m.equals("B") || m.equals("D") || m.equals("S") || m.equals("P");
     }
 
     public String shootPosition(String position) {
 
-        if (!positionIsValid(position))
+        if (isPositionNotValid(position))
             return "Incorrect position";
 
         int x = getFirstNumberFromPosition(position);
@@ -46,14 +105,16 @@ public class Matrix {
         return "Shoot!!";
     }
 
-    private boolean positionIsValid(String position) {
+    private boolean isPositionNotValid(String position) {
 
-        if (position.length() < 2 || position.length() > 3)
-            return false;
+        if (!(position.length() > 1))
+            return true;
 
+        if (!(position.length() < 4))
+            return true;
 
         if (!position.toLowerCase(Locale.ROOT).substring(0, 1).matches("[a-j]"))
-            return false;
+            return true;
 
         boolean isXAxisValid;
 
@@ -63,95 +124,9 @@ public class Matrix {
             isXAxisValid = position.substring(1, 2).matches("[1-9]");
 
 
-        return isXAxisValid;
+        return !isXAxisValid;
     }
 
-    private String recognizeAndFindPlaceToShip(String position, Vector vector, ShipType shipType) {
-        String typeSymbol;
-        int shipLength;
-
-        switch (shipType) {
-            case PATROL_BOAT -> {
-                typeSymbol = "P";
-                shipLength = 2;
-                return addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
-            }
-            case SUBMARINE -> {
-                typeSymbol = "S";
-                shipLength = 3;
-                return addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
-            }
-            case DESTROYER -> {
-                typeSymbol = "D";
-                shipLength = 3;
-                return addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
-            }
-            case BATTLESHIP -> {
-                typeSymbol = "B";
-                shipLength = 4;
-                return addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
-            }
-            case CARRIER -> {
-                typeSymbol = "C";
-                shipLength = 5;
-                return addSymbolsToMatrix(vector, position, typeSymbol, shipLength);
-            }
-        }
-        return "recognizeAndFindPlaceToShip failed";
-    }
-
-    private String addSymbolsToMatrix(Vector vector, String position, String typeSymbol, int shipLength) {
-
-        int x = getFirstNumberFromPosition(position);
-        int y = getSecondNumberFromPosition(position);
-
-        matrix[y][x] = typeSymbol;
-
-        switch (vector) {
-
-            case NORTH -> {
-                for (int i = 1; i < shipLength; i++) {
-                    y -= 1;
-                    if (y < 0)
-                        return "Bad placement of the ship.";
-
-                    matrix[y][x] = typeSymbol;
-                }
-            }
-
-            case SOUTH -> {
-                for (int i = 1; i < shipLength; i++) {
-                    y += 1;
-                    if (y > 9)
-                        return "Bad placement of the ship.";
-
-                    matrix[y][x] = typeSymbol;
-                }
-            }
-
-            case WEST -> {
-                for (int i = 1; i < shipLength; i++) {
-                    x -= 1;
-                    if (x < 0)
-                        return "Bad placement of the ship.";
-
-                    matrix[y][x] = typeSymbol;
-                }
-            }
-
-            case EAST -> {
-                for (int i = 1; i < shipLength; i++) {
-                    x += 1;
-                    if (x > 9)
-                        return "Bad placement of the ship.";
-
-                    matrix[y][x] = typeSymbol;
-                }
-            }
-        }
-
-        return "Ship added.";
-    }
 
     private int getFirstNumberFromPosition(String position) {
 

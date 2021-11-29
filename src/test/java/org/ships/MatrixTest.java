@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.spy;
 
 class MatrixTest {
 
@@ -54,10 +56,10 @@ class MatrixTest {
     }
 
     @TestFactory
-    Collection<DynamicTest> shouldReturnInfoIfBadPlacementOfShip() {
+    Collection<DynamicTest> shouldReturnInfoOfShipOutOfBounds() {
 
         //given
-        String result = "Bad placement of the ship.";
+        String result = "Ship out of bounds.";
 
         Ship carrier = new Ship(ShipType.CARRIER, Vector.EAST);
         Ship battleship = new Ship(ShipType.BATTLESHIP, Vector.NORTH);
@@ -113,10 +115,10 @@ class MatrixTest {
     }
 
     @Test
-    void shouldReturnInfoBadIncorrectPosition() {
+    void shouldReturnInfoOfIncorrectCoordinates() {
 
         //given
-        String result = "Incorrect position";
+        String result = "Incorrect coordinates";
         Ship carrier = new Ship(ShipType.CARRIER, Vector.EAST);
 
         //when
@@ -196,6 +198,44 @@ class MatrixTest {
         assertEquals(result, matrix.shootPosition("a11"));
         assertEquals(result, matrix.shootPosition("x6"));
         assertEquals(result, matrix.shootPosition("y12"));
+
+    }
+
+    @Test
+    void shouldGetInfoIfShipIsOnAnother(){
+
+        //given
+        Matrix matrix = spy(Matrix.class);
+        String result = "Ship on another.";
+
+        Ship carrier = new Ship(ShipType.CARRIER, Vector.EAST);
+        Ship battleship = new Ship(ShipType.BATTLESHIP, Vector.NORTH);
+        Ship submarine = new Ship(ShipType.SUBMARINE, Vector.WEST);
+        Ship destroyer = new Ship(ShipType.DESTROYER, Vector.SOUTH);
+        Ship patrolBoat1 = new Ship(ShipType.PATROL_BOAT, Vector.SOUTH);
+        Ship patrolBoat2 = new Ship(ShipType.PATROL_BOAT, Vector.NORTH);
+        Ship patrolBoat3 = new Ship(ShipType.PATROL_BOAT, Vector.EAST);
+
+        String[][] givenMatrix = {
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", "C", "C", "C", "C", "C", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",}
+        };
+
+
+        given(matrix.getMatrix()).willReturn(givenMatrix);
+
+        //when
+        //then
+        assertEquals(result, matrix.addShipToMatrix(destroyer, "b1"));
+        assertEquals(result, matrix.addShipToMatrix(patrolBoat2, "f3"));
 
     }
 
