@@ -45,12 +45,71 @@ public class Matrix {
 
             matrix[y][x] = type;
 
+            addOffset(x, y);
+
         });
 
         return "Ship added.";
 
     }
 
+    private void addOffset(int x, int y) {
+
+        if (x - 1 >= 0 && y - 1 >= 0)
+            if (!areCoordinatesOccupied(getMatrix()[y - 1][x - 1]))
+                matrix[y - 1][x - 1] = "!";
+
+        if (y - 1 >= 0)
+            if (!areCoordinatesOccupied(getMatrix()[y - 1][x]))
+                matrix[y - 1][x] = "!";
+
+        if (x + 1 < 10 && y - 1 >= 0)
+            if (!areCoordinatesOccupied(getMatrix()[y - 1][x + 1]))
+                matrix[y - 1][x + 1] = "!";
+
+        if (x - 1 >= 0)
+            if (!areCoordinatesOccupied(getMatrix()[y][x - 1]))
+                matrix[y][x - 1] = "!";
+
+        if (x + 1 < 10)
+            if (!areCoordinatesOccupied(getMatrix()[y][x + 1]))
+                matrix[y][x + 1] = "!";
+
+        if (x - 1 >= 0 && y + 1 < 10)
+            if (!areCoordinatesOccupied(getMatrix()[y + 1][x - 1]))
+                matrix[y + 1][x - 1] = "!";
+
+        if (y + 1 < 10)
+            if (!areCoordinatesOccupied(getMatrix()[y + 1][x]))
+                matrix[y + 1][x] = "!";
+
+        if (x + 1 < 10 && y + 1 < 10)
+            if (!areCoordinatesOccupied(getMatrix()[y + 1][x + 1]))
+                matrix[y + 1][x + 1] = "!";
+
+    }
+
+    private boolean isPositionNotValid(String position) {
+
+        if (!(position.length() > 1))
+            return true;
+
+        if (!(position.length() < 4))
+            return true;
+
+        if (!position.toLowerCase(Locale.ROOT).substring(0, 1).matches("[a-j]"))
+            return true;
+
+        boolean isXAxisValid;
+
+        if (position.length() == 3)
+            isXAxisValid = position.startsWith("10", 1);
+        else
+            isXAxisValid = position.substring(1, 2).matches("[1-9]");
+
+
+        return !isXAxisValid;
+    }
 
     private boolean shipIsNotInBounds(List<String> encodedShip) {
 
@@ -104,29 +163,6 @@ public class Matrix {
 
         return "Shoot!!";
     }
-
-    private boolean isPositionNotValid(String position) {
-
-        if (!(position.length() > 1))
-            return true;
-
-        if (!(position.length() < 4))
-            return true;
-
-        if (!position.toLowerCase(Locale.ROOT).substring(0, 1).matches("[a-j]"))
-            return true;
-
-        boolean isXAxisValid;
-
-        if (position.length() == 3)
-            isXAxisValid = position.startsWith("10", 1);
-        else
-            isXAxisValid = position.substring(1, 2).matches("[1-9]");
-
-
-        return !isXAxisValid;
-    }
-
 
     private int getFirstNumberFromPosition(String position) {
 

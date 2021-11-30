@@ -30,16 +30,16 @@ class MatrixTest {
         Ship patrolBoat3 = new Ship(ShipType.PATROL_BOAT, Vector.EAST);
 
         String[][] result = {
-                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
-                {" ", "P", " ", "D", " ", " ", " ", " ", " ", " ",},
-                {" ", "P", " ", "D", " ", " ", " ", " ", " ", " ",},
-                {" ", " ", " ", "D", " ", " ", " ", "S", "S", "S",},
-                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
-                {"C", "C", "C", "C", "C", " ", " ", " ", "B", " ",},
-                {" ", " ", " ", " ", " ", " ", " ", " ", "B", " ",},
-                {" ", " ", " ", " ", " ", " ", " ", " ", "B", " ",},
-                {" ", " ", " ", "P", " ", "P", "P", " ", "B", " ",},
-                {" ", " ", " ", "P", " ", " ", " ", " ", " ", " ",}
+                {"!", "!", "!", "!", "!", " ", " ", " ", " ", " ",},
+                {"!", "P", "!", "D", "!", " ", " ", " ", " ", " ",},
+                {"!", "P", "!", "D", "!", " ", "!", "!", "!", "!",},
+                {"!", "!", "!", "D", "!", " ", "!", "S", "S", "S",},
+                {"!", "!", "!", "!", "!", "!", "!", "!", "!", "!",},
+                {"C", "C", "C", "C", "C", "!", " ", "!", "B", "!",},
+                {"!", "!", "!", "!", "!", "!", " ", "!", "B", "!",},
+                {" ", " ", "!", "!", "!", "!", "!", "!", "B", "!",},
+                {" ", " ", "!", "P", "!", "P", "P", "!", "B", "!",},
+                {" ", " ", "!", "P", "!", "!", "!", "!", "!", "!",}
         };
 
         //when
@@ -202,19 +202,14 @@ class MatrixTest {
     }
 
     @Test
-    void shouldGetInfoIfShipIsOnAnother(){
+    void shouldGetInfoIfShipIsOnAnother() {
 
         //given
         Matrix matrix = spy(Matrix.class);
         String result = "Ship on another.";
 
-        Ship carrier = new Ship(ShipType.CARRIER, Vector.EAST);
-        Ship battleship = new Ship(ShipType.BATTLESHIP, Vector.NORTH);
-        Ship submarine = new Ship(ShipType.SUBMARINE, Vector.WEST);
         Ship destroyer = new Ship(ShipType.DESTROYER, Vector.SOUTH);
-        Ship patrolBoat1 = new Ship(ShipType.PATROL_BOAT, Vector.SOUTH);
         Ship patrolBoat2 = new Ship(ShipType.PATROL_BOAT, Vector.NORTH);
-        Ship patrolBoat3 = new Ship(ShipType.PATROL_BOAT, Vector.EAST);
 
         String[][] givenMatrix = {
                 {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
