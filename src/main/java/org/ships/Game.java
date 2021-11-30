@@ -1,5 +1,6 @@
 package org.ships;
 
+import org.ships.service.ShootService;
 import org.ships.ship.Ship;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Scanner;
 public class Game {
 
     private final Map map = new Map();
+    private final ShootService shootService = new ShootService();
     private final List<Ship> allyShips = new ArrayList<>();
     private final List<Ship> enemyShips = new ArrayList<>();
 
@@ -17,7 +19,7 @@ public class Game {
         map.drawMaps(matrixAlly, matrixEnemy);
 
         while (!allyShips.isEmpty() || !enemyShips.isEmpty()) {
-            matrixEnemy.shoot(allyTurn());
+            shootService.shoot(matrixEnemy, allyTurn());
         }
 
     }

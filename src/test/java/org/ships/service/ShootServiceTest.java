@@ -1,6 +1,7 @@
-package org.ships;
+package org.ships.service;
 
 import org.junit.jupiter.api.Test;
+import org.ships.Matrix;
 
 import java.util.Arrays;
 
@@ -8,12 +9,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.spy;
 
-class MatrixTest {
+class ShootServiceTest {
 
+    private final ShootService shootService = new ShootService();
     private final Matrix matrix = new Matrix();
 
     @Test
-    void shouldProvideShootPositionToMatrix() {
+    void shouldShootAddDotToMatrix() {
 
         //given
         String[][] result = {
@@ -30,37 +32,51 @@ class MatrixTest {
         };
 
         //when
-        matrix.shoot("b2");
-        matrix.shoot("b3");
+        shootService.shoot(matrix, "b2");
+        shootService.shoot(matrix, "b3");
 
-        matrix.shoot("d2");
-        matrix.shoot("d3");
-        matrix.shoot("d4");
+        shootService.shoot(matrix, "d2");
+        shootService.shoot(matrix, "d3");
+        shootService.shoot(matrix, "d4");
 
-        matrix.shoot("h4");
-        matrix.shoot("i4");
-        matrix.shoot("j4");
+        shootService.shoot(matrix, "h4");
+        shootService.shoot(matrix, "i4");
+        shootService.shoot(matrix, "j4");
 
-        matrix.shoot("d9");
-        matrix.shoot("d10");
+        shootService.shoot(matrix, "d9");
+        shootService.shoot(matrix, "d10");
 
         //then
         assertEquals(Arrays.deepToString(result), Arrays.deepToString(matrix.getMatrix()));
-
-
     }
 
     @Test
-    void shouldGetInfoIfShotIsValid() {
+    void shouldReturnMissed() {
 
         //given
+        Matrix matrix = spy(Matrix.class);
         String result = "Missed.";
+
+        String[][] givenMatrix = {
+                {"!", "!", "!", "!", "!", " ", " ", " ", " ", " ",},
+                {"!", "P", "!", "D", "!", " ", " ", " ", " ", " ",},
+                {"!", "P", "!", "D", "!", " ", "!", "!", "!", "!",},
+                {"!", "!", "!", "D", "!", " ", "!", "S", "S", "S",},
+                {"!", "!", "!", "!", "!", "!", "!", "!", "!", "!",},
+                {"C", "C", "C", "C", "C", "!", " ", "!", "B", "!",},
+                {"!", "!", "!", "!", "!", "!", " ", "!", "B", "!",},
+                {" ", " ", "!", "!", "!", "!", "!", "!", "B", "!",},
+                {" ", " ", "!", "P", "!", "P", "P", "!", "B", "!",},
+                {" ", " ", "!", "P", "!", "!", "!", "!", "!", "!",}
+        };
+
+        given(matrix.getMatrix()).willReturn(givenMatrix);
 
         //when
         //then
-        assertEquals(result, matrix.shoot("b1"));
-        assertEquals(result, matrix.shoot("a10"));
-        assertEquals(result, matrix.shoot("g5"));
+        assertEquals(result, shootService.shoot(matrix, "b1"));
+        assertEquals(result, shootService.shoot(matrix, "a10"));
+        assertEquals(result, shootService.shoot(matrix, "g5"));
 
     }
 
@@ -88,13 +104,12 @@ class MatrixTest {
 
         //when
         //then
-        assertEquals(result, matrix.shoot("b2"));
-        assertEquals(result, matrix.shoot("d3"));
-        assertEquals(result, matrix.shoot("i9"));
-        assertEquals(result, matrix.shoot("j4"));
+        assertEquals(result, shootService.shoot(matrix, "b2"));
+        assertEquals(result, shootService.shoot(matrix, "d3"));
+        assertEquals(result, shootService.shoot(matrix, "i9"));
+        assertEquals(result, shootService.shoot(matrix, "j4"));
 
 
     }
-
 
 }
