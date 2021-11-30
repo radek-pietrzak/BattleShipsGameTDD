@@ -136,6 +136,48 @@ class MatrixTest {
     }
 
     @Test
+    void shouldReturnInfoIfShipIsToCloseToAnother(){
+
+        //given
+        Matrix matrix = spy(Matrix.class);
+        String result = "Ship to close to another.";
+
+        Ship carrier = new Ship(ShipType.CARRIER, Vector.EAST);
+        Ship battleship = new Ship(ShipType.BATTLESHIP, Vector.NORTH);
+        Ship submarine = new Ship(ShipType.SUBMARINE, Vector.WEST);
+        Ship destroyer = new Ship(ShipType.DESTROYER, Vector.SOUTH);
+        Ship patrolBoat1 = new Ship(ShipType.PATROL_BOAT, Vector.SOUTH);
+        Ship patrolBoat2 = new Ship(ShipType.PATROL_BOAT, Vector.NORTH);
+        Ship patrolBoat3 = new Ship(ShipType.PATROL_BOAT, Vector.EAST);
+
+        String[][] givenMatrix = {
+                {"!", "!", "!", "!", "!", " ", " ", " ", " ", " ",},
+                {"!", "P", "!", "D", "!", " ", " ", " ", " ", " ",},
+                {"!", "P", "!", "D", "!", " ", "!", "!", "!", "!",},
+                {"!", "!", "!", "D", "!", " ", "!", "S", "S", "S",},
+                {"!", "!", "!", "!", "!", "!", "!", "!", "!", "!",},
+                {"C", "C", "C", "C", "C", "!", " ", "!", "B", "!",},
+                {"!", "!", "!", "!", "!", "!", " ", "!", "B", "!",},
+                {" ", " ", "!", "!", "!", "!", "!", "!", "B", "!",},
+                {" ", " ", "!", "P", "!", "P", "P", "!", "B", "!",},
+                {" ", " ", "!", "P", "!", "!", "!", "!", "!", "!",}
+        };
+
+
+        given(matrix.getMatrix()).willReturn(givenMatrix);
+
+        //when
+        //then
+        assertEquals(result, matrix.addShipToMatrix(carrier, "a1"));
+        assertEquals(result, matrix.addShipToMatrix(battleship, "h9"));
+        assertEquals(result, matrix.addShipToMatrix(submarine, "h3"));
+        assertEquals(result, matrix.addShipToMatrix(destroyer, "g1"));
+        assertEquals(result, matrix.addShipToMatrix(patrolBoat1, "j2"));
+        assertEquals(result, matrix.addShipToMatrix(patrolBoat2, "j3"));
+        assertEquals(result, matrix.addShipToMatrix(patrolBoat3, "g7"));
+    }
+
+    @Test
     void shouldProvideShootPositionToMatrix() {
 
         //given

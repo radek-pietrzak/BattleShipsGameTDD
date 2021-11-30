@@ -33,8 +33,11 @@ public class Matrix {
         if (shipIsNotInBounds(encodedShip))
             return "Ship out of bounds.";
 
-        if (shipIsOnAnotherShip(encodedShip))
+        if (shipIsOnAnother(encodedShip))
             return "Ship on another.";
+
+        if (shipIsToCloseToAnother(encodedShip))
+            return "Ship to close to another.";
 
         encodedShip.forEach(c -> {
             String type = c.substring(0, 1);
@@ -50,42 +53,6 @@ public class Matrix {
         });
 
         return "Ship added.";
-
-    }
-
-    private void addOffset(int x, int y) {
-
-        if (x - 1 >= 0 && y - 1 >= 0)
-            if (!areCoordinatesOccupied(getMatrix()[y - 1][x - 1]))
-                matrix[y - 1][x - 1] = "!";
-
-        if (y - 1 >= 0)
-            if (!areCoordinatesOccupied(getMatrix()[y - 1][x]))
-                matrix[y - 1][x] = "!";
-
-        if (x + 1 < 10 && y - 1 >= 0)
-            if (!areCoordinatesOccupied(getMatrix()[y - 1][x + 1]))
-                matrix[y - 1][x + 1] = "!";
-
-        if (x - 1 >= 0)
-            if (!areCoordinatesOccupied(getMatrix()[y][x - 1]))
-                matrix[y][x - 1] = "!";
-
-        if (x + 1 < 10)
-            if (!areCoordinatesOccupied(getMatrix()[y][x + 1]))
-                matrix[y][x + 1] = "!";
-
-        if (x - 1 >= 0 && y + 1 < 10)
-            if (!areCoordinatesOccupied(getMatrix()[y + 1][x - 1]))
-                matrix[y + 1][x - 1] = "!";
-
-        if (y + 1 < 10)
-            if (!areCoordinatesOccupied(getMatrix()[y + 1][x]))
-                matrix[y + 1][x] = "!";
-
-        if (x + 1 < 10 && y + 1 < 10)
-            if (!areCoordinatesOccupied(getMatrix()[y + 1][x + 1]))
-                matrix[y + 1][x + 1] = "!";
 
     }
 
@@ -129,7 +96,7 @@ public class Matrix {
         return result.get();
     }
 
-    private boolean shipIsOnAnotherShip(List<String> encodedShip) {
+    private boolean shipIsOnAnother(List<String> encodedShip) {
 
         AtomicBoolean result = new AtomicBoolean(false);
 
@@ -145,6 +112,60 @@ public class Matrix {
         });
 
         return result.get();
+    }
+
+    private boolean shipIsToCloseToAnother(List<String> encodedShip) {
+
+        AtomicBoolean result = new AtomicBoolean(false);
+
+        encodedShip.forEach(c -> {
+            int dot = c.indexOf('.');
+            int comma = c.indexOf(',');
+            int x = Integer.parseInt(c.substring(dot + 1, comma));
+            int y = Integer.parseInt(c.substring(comma + 1));
+
+            if (getMatrix()[y][x].equals("!"))
+                result.set(true);
+
+        });
+
+        return result.get();
+    }
+
+    private void addOffset(int x, int y) {
+
+        if (x - 1 >= 0 && y - 1 >= 0)
+            if (!areCoordinatesOccupied(getMatrix()[y - 1][x - 1]))
+                matrix[y - 1][x - 1] = "!";
+
+        if (y - 1 >= 0)
+            if (!areCoordinatesOccupied(getMatrix()[y - 1][x]))
+                matrix[y - 1][x] = "!";
+
+        if (x + 1 < 10 && y - 1 >= 0)
+            if (!areCoordinatesOccupied(getMatrix()[y - 1][x + 1]))
+                matrix[y - 1][x + 1] = "!";
+
+        if (x - 1 >= 0)
+            if (!areCoordinatesOccupied(getMatrix()[y][x - 1]))
+                matrix[y][x - 1] = "!";
+
+        if (x + 1 < 10)
+            if (!areCoordinatesOccupied(getMatrix()[y][x + 1]))
+                matrix[y][x + 1] = "!";
+
+        if (x - 1 >= 0 && y + 1 < 10)
+            if (!areCoordinatesOccupied(getMatrix()[y + 1][x - 1]))
+                matrix[y + 1][x - 1] = "!";
+
+        if (y + 1 < 10)
+            if (!areCoordinatesOccupied(getMatrix()[y + 1][x]))
+                matrix[y + 1][x] = "!";
+
+        if (x + 1 < 10 && y + 1 < 10)
+            if (!areCoordinatesOccupied(getMatrix()[y + 1][x + 1]))
+                matrix[y + 1][x + 1] = "!";
+
     }
 
     private boolean areCoordinatesOccupied(String m) {
