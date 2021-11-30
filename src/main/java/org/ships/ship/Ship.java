@@ -1,8 +1,9 @@
-package org.ships;
+package org.ships.ship;
+
+import org.ships.service.CoordinatesService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class Ship {
 
@@ -13,7 +14,6 @@ public class Ship {
         this.shipType = shipType;
         this.vector = vector;
     }
-
 
     public ShipType getShipType() {
         return shipType;

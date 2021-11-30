@@ -1,4 +1,4 @@
-package org.ships;
+package org.ships.service;
 
 import java.util.Locale;
 

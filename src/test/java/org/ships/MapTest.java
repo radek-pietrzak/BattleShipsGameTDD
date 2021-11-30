@@ -1,6 +1,10 @@
 package org.ships;
 
 import org.junit.jupiter.api.Test;
+import org.ships.service.ShipService;
+import org.ships.ship.Ship;
+import org.ships.ship.ShipType;
+import org.ships.ship.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,6 +40,7 @@ class MapTest {
     void shouldDrawMapsAccordingToMatrix() {
 
         //given
+        ShipService shipService = new ShipService();
         Matrix matrixAlly = new Matrix();
         Matrix matrixEnemy = new Matrix();
 
@@ -62,13 +67,13 @@ class MapTest {
                 """;
 
         //when
-        matrixAlly.addShipToMatrix(carrier, "a6");
-        matrixAlly.addShipToMatrix(battleship, "i9");
-        matrixAlly.addShipToMatrix(submarine, "j4");
-        matrixAlly.addShipToMatrix(destroyer, "d2");
-        matrixAlly.addShipToMatrix(patrolBoat1, "b2");
-        matrixAlly.addShipToMatrix(patrolBoat2, "d10");
-        matrixAlly.addShipToMatrix(patrolBoat3, "f9");
+        shipService.addShipToMatrix(carrier, matrixAlly, "a6");
+        shipService.addShipToMatrix(battleship, matrixAlly,  "i9");
+        shipService.addShipToMatrix(submarine, matrixAlly,  "j4");
+        shipService.addShipToMatrix(destroyer, matrixAlly,  "d2");
+        shipService.addShipToMatrix(patrolBoat1, matrixAlly,  "b2");
+        shipService.addShipToMatrix(patrolBoat2, matrixAlly,  "d10");
+        shipService.addShipToMatrix(patrolBoat3, matrixAlly,  "f9");
 
         //then
         assertEquals(result, map.drawMaps(matrixAlly, matrixEnemy));

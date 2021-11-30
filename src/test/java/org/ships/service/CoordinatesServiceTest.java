@@ -1,6 +1,7 @@
-package org.ships;
+package org.ships.service;
 
 import org.junit.jupiter.api.Test;
+import org.ships.service.CoordinatesService;
 
 import static org.junit.jupiter.api.Assertions.*;
 

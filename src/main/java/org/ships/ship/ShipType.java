@@ -1,4 +1,4 @@
-package org.ships;
+package org.ships.ship;
 
 public enum ShipType {
 

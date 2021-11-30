@@ -1,4 +1,4 @@
-package org.ships;
+package org.ships.ship;
 
 import org.junit.jupiter.api.Test;
 
