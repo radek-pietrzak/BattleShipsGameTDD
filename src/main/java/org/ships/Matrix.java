@@ -25,7 +25,7 @@ public class Matrix {
 
     public String addShipToMatrix(Ship ship, String coordinates) {
 
-        if (isPositionNotValid(coordinates))
+        if (!ValidationService.areCoordinatesValid(coordinates))
             return "Incorrect coordinates";
 
         List<String> encodedShip = Ship.encodeShipToCoordinates(ship, coordinates);
@@ -57,7 +57,7 @@ public class Matrix {
 
     public String shoot(String coordinates) {
 
-        if (isPositionNotValid(coordinates))
+        if (!ValidationService.areCoordinatesValid(coordinates))
             return "Incorrect coordinates";
 
         int x = getFirstNumberFromPosition(coordinates);
@@ -71,36 +71,6 @@ public class Matrix {
         matrix[y][x] = ".";
 
         return "Missed.";
-    }
-
-    private boolean isShotHit(int x, int y) {
-        return getMatrix()[y][x].equals("C") ||
-                getMatrix()[y][x].equals("B") ||
-                getMatrix()[y][x].equals("D") ||
-                getMatrix()[y][x].equals("S") ||
-                getMatrix()[y][x].equals("P");
-    }
-
-    private boolean isPositionNotValid(String position) {
-
-        if (!(position.length() > 1))
-            return true;
-
-        if (!(position.length() < 4))
-            return true;
-
-        if (!position.toLowerCase(Locale.ROOT).substring(0, 1).matches("[a-j]"))
-            return true;
-
-        boolean isXAxisValid;
-
-        if (position.length() == 3)
-            isXAxisValid = position.startsWith("10", 1);
-        else
-            isXAxisValid = position.substring(1, 2).matches("[1-9]");
-
-
-        return !isXAxisValid;
     }
 
     private boolean shipIsNotInBounds(List<String> encodedShip) {
@@ -195,6 +165,14 @@ public class Matrix {
 
     private boolean areCoordinatesOccupied(String m) {
         return m.equals("C") || m.equals("B") || m.equals("D") || m.equals("S") || m.equals("P");
+    }
+
+    private boolean isShotHit(int x, int y) {
+        return getMatrix()[y][x].equals("C") ||
+                getMatrix()[y][x].equals("B") ||
+                getMatrix()[y][x].equals("D") ||
+                getMatrix()[y][x].equals("S") ||
+                getMatrix()[y][x].equals("P");
     }
 
     private int getFirstNumberFromPosition(String position) {
