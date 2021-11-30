@@ -53,7 +53,32 @@ public class Matrix {
         });
 
         return "Ship added.";
+    }
 
+    public String shoot(String coordinates) {
+
+        if (isPositionNotValid(coordinates))
+            return "Incorrect coordinates";
+
+        int x = getFirstNumberFromPosition(coordinates);
+        int y = getSecondNumberFromPosition(coordinates);
+
+        if (isShotHit(x, y)) {
+            matrix[y][x] = "X";
+            return "Hit!!";
+        }
+
+        matrix[y][x] = ".";
+
+        return "Missed.";
+    }
+
+    private boolean isShotHit(int x, int y) {
+        return getMatrix()[y][x].equals("C") ||
+                getMatrix()[y][x].equals("B") ||
+                getMatrix()[y][x].equals("D") ||
+                getMatrix()[y][x].equals("S") ||
+                getMatrix()[y][x].equals("P");
     }
 
     private boolean isPositionNotValid(String position) {
@@ -170,19 +195,6 @@ public class Matrix {
 
     private boolean areCoordinatesOccupied(String m) {
         return m.equals("C") || m.equals("B") || m.equals("D") || m.equals("S") || m.equals("P");
-    }
-
-    public String shootPosition(String position) {
-
-        if (isPositionNotValid(position))
-            return "Incorrect position";
-
-        int x = getFirstNumberFromPosition(position);
-        int y = getSecondNumberFromPosition(position);
-
-        matrix[y][x] = ".";
-
-        return "Shoot!!";
     }
 
     private int getFirstNumberFromPosition(String position) {

@@ -15,7 +15,7 @@ public class Game {
         map.drawMaps(matrixAlly, matrixEnemy);
 
         while (!allyShips.isEmpty() || !enemyShips.isEmpty()) {
-            matrixEnemy.shootPosition(allyTurn());
+            matrixEnemy.shoot(allyTurn());
         }
 
     }

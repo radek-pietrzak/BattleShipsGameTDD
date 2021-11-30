@@ -115,7 +115,7 @@ class MatrixTest {
     }
 
     @Test
-    void shouldReturnInfoOfIncorrectCoordinates() {
+    void shouldReturnInfoOfIncorrectCoordinatesOfShip() {
 
         //given
         String result = "Incorrect coordinates";
@@ -136,7 +136,39 @@ class MatrixTest {
     }
 
     @Test
-    void shouldReturnInfoIfShipIsToCloseToAnother(){
+    void shouldGetInfoIfShipIsOnAnother() {
+
+        //given
+        Matrix matrix = spy(Matrix.class);
+        String result = "Ship on another.";
+
+        Ship destroyer = new Ship(ShipType.DESTROYER, Vector.SOUTH);
+        Ship patrolBoat2 = new Ship(ShipType.PATROL_BOAT, Vector.NORTH);
+
+        String[][] givenMatrix = {
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", "C", "C", "C", "C", "C", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",}
+        };
+
+
+        given(matrix.getMatrix()).willReturn(givenMatrix);
+
+        //when
+        //then
+        assertEquals(result, matrix.addShipToMatrix(destroyer, "b1"));
+        assertEquals(result, matrix.addShipToMatrix(patrolBoat2, "f3"));
+    }
+
+    @Test
+    void shouldReturnInfoIfShipIsToCloseToAnother() {
 
         //given
         Matrix matrix = spy(Matrix.class);
@@ -195,19 +227,19 @@ class MatrixTest {
         };
 
         //when
-        matrix.shootPosition("b2");
-        matrix.shootPosition("b3");
+        matrix.shoot("b2");
+        matrix.shoot("b3");
 
-        matrix.shootPosition("d2");
-        matrix.shootPosition("d3");
-        matrix.shootPosition("d4");
+        matrix.shoot("d2");
+        matrix.shoot("d3");
+        matrix.shoot("d4");
 
-        matrix.shootPosition("h4");
-        matrix.shootPosition("i4");
-        matrix.shootPosition("j4");
+        matrix.shoot("h4");
+        matrix.shoot("i4");
+        matrix.shoot("j4");
 
-        matrix.shootPosition("d9");
-        matrix.shootPosition("d10");
+        matrix.shoot("d9");
+        matrix.shoot("d10");
 
         //then
         assertEquals(Arrays.deepToString(result), Arrays.deepToString(matrix.getMatrix()));
@@ -219,61 +251,61 @@ class MatrixTest {
     void shouldGetInfoIfShotIsValid() {
 
         //given
-        String result = "Shoot!!";
+        String result = "Missed.";
 
         //when
         //then
-        assertEquals(result, matrix.shootPosition("b1"));
-        assertEquals(result, matrix.shootPosition("a10"));
-        assertEquals(result, matrix.shootPosition("g5"));
+        assertEquals(result, matrix.shoot("b1"));
+        assertEquals(result, matrix.shoot("a10"));
+        assertEquals(result, matrix.shoot("g5"));
 
     }
 
     @Test
-    void shouldGetInfoIfShotIsNotValid() {
+    void shouldGetInfoIfCoordinatesOfShotAreNotValid() {
 
         //given
-        String result = "Incorrect position";
+        String result = "Incorrect coordinates";
 
         //when
         //then
-        assertEquals(result, matrix.shootPosition("a11"));
-        assertEquals(result, matrix.shootPosition("x6"));
-        assertEquals(result, matrix.shootPosition("y12"));
+        assertEquals(result, matrix.shoot("a11"));
+        assertEquals(result, matrix.shoot("x6"));
+        assertEquals(result, matrix.shoot("y12"));
 
     }
 
     @Test
-    void shouldGetInfoIfShipIsOnAnother() {
+    void shouldGetInfoIfShotHits() {
 
         //given
         Matrix matrix = spy(Matrix.class);
-        String result = "Ship on another.";
-
-        Ship destroyer = new Ship(ShipType.DESTROYER, Vector.SOUTH);
-        Ship patrolBoat2 = new Ship(ShipType.PATROL_BOAT, Vector.NORTH);
+        String result = "Hit!!";
 
         String[][] givenMatrix = {
-                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
-                {" ", "C", "C", "C", "C", "C", " ", " ", " ", " ",},
-                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
-                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
-                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
-                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
-                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
-                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
-                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
-                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",}
+                {"!", "!", "!", "!", "!", " ", " ", " ", " ", " ",},
+                {"!", "P", "!", "D", "!", " ", " ", " ", " ", " ",},
+                {"!", "P", "!", "D", "!", " ", "!", "!", "!", "!",},
+                {"!", "!", "!", "D", "!", " ", "!", "S", "S", "S",},
+                {"!", "!", "!", "!", "!", "!", "!", "!", "!", "!",},
+                {"C", "C", "C", "C", "C", "!", " ", "!", "B", "!",},
+                {"!", "!", "!", "!", "!", "!", " ", "!", "B", "!",},
+                {" ", " ", "!", "!", "!", "!", "!", "!", "B", "!",},
+                {" ", " ", "!", "P", "!", "P", "P", "!", "B", "!",},
+                {" ", " ", "!", "P", "!", "!", "!", "!", "!", "!",}
         };
-
 
         given(matrix.getMatrix()).willReturn(givenMatrix);
 
         //when
         //then
-        assertEquals(result, matrix.addShipToMatrix(destroyer, "b1"));
-        assertEquals(result, matrix.addShipToMatrix(patrolBoat2, "f3"));
+        assertEquals(result, matrix.shoot("b2"));
+        assertEquals(result, matrix.shoot("d3"));
+        assertEquals(result, matrix.shoot("i9"));
+        assertEquals(result, matrix.shoot("j4"));
+
 
     }
+
 
 }
