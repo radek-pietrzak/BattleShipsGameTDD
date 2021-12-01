@@ -32,4 +32,22 @@ public class CoordinatesService {
 
     }
 
+    public static String getCoordinatesFromShipSet(String set) {
+
+        if (!ValidationService.isShipSetValid(set))
+            throw new IllegalStateException("Unexpected value" + set);
+
+        String coordinates = "";
+
+        if (set.length() == 4) {
+            coordinates = set.substring(0, 2);
+        }
+
+        if (set.length() == 5) {
+            coordinates = set.substring(0, 3);
+        }
+
+        return coordinates;
+    }
+
 }

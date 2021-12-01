@@ -26,4 +26,14 @@ class CoordinatesServiceTest {
         assertEquals(0, CoordinatesService.getYFromCoordinates("j1"));
         assertEquals(9, CoordinatesService.getYFromCoordinates("g10"));
     }
+
+    @Test
+    void shouldGetProperCoordinatesFromShipSet(){
+
+        assertEquals("a1", CoordinatesService.getCoordinatesFromShipSet("a1 n"));
+        assertEquals("h10", CoordinatesService.getCoordinatesFromShipSet("h10 w"));
+        assertEquals("a10", CoordinatesService.getCoordinatesFromShipSet("a10 n"));
+        assertEquals("g5", CoordinatesService.getCoordinatesFromShipSet("g5 e"));
+        assertEquals("e2", CoordinatesService.getCoordinatesFromShipSet("e2 s"));
+    }
 }
