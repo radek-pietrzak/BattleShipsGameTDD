@@ -24,4 +24,33 @@ public class ValidationService {
 
         return isXAxisValid;
     }
+
+    public static boolean isShipSetValid(String set) {
+
+        if (set.length() > 5)
+            return false;
+
+        if (set.length() < 4)
+            return false;
+
+        if (!set.contains(" "))
+            return false;
+
+        if (set.length() == 4) {
+            if (!areCoordinatesValid(set.substring(0, 2)))
+                return false;
+
+            if (!set.substring(3).matches("[nswe]"))
+                return false;
+        }
+
+        if (set.length() == 5) {
+            if (!areCoordinatesValid(set.substring(0, 3)))
+                return false;
+
+            return set.substring(4).matches("[nswe]");
+        }
+
+        return true;
+    }
 }

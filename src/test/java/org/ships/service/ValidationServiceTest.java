@@ -35,4 +35,25 @@ class ValidationServiceTest {
         assertFalse(ValidationService.areCoordinatesValid("b11"));
         assertFalse(ValidationService.areCoordinatesValid("b111"));
     }
+
+    @Test
+    void shouldReturnTrueIfShipSetIsValid() {
+
+        assertTrue(ValidationService.isShipSetValid("a1 n"));
+        assertTrue(ValidationService.isShipSetValid("g5 w"));
+        assertTrue(ValidationService.isShipSetValid("a10 e"));
+        assertTrue(ValidationService.isShipSetValid("c3 s"));
+        assertTrue(ValidationService.isShipSetValid("j10 w"));
+    }
+
+    @Test
+    void shouldReturnFalseIfShipSetIsNotValid() {
+
+        assertFalse(ValidationService.isShipSetValid("a n"));
+        assertFalse(ValidationService.isShipSetValid("g5 x"));
+        assertFalse(ValidationService.isShipSetValid("a10  e"));
+        assertFalse(ValidationService.isShipSetValid("c 3 s"));
+        assertFalse(ValidationService.isShipSetValid("j10w"));
+        assertFalse(ValidationService.isShipSetValid("j10,w"));
+    }
 }
