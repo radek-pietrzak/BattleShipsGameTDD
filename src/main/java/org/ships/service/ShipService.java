@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ShipService {
 
-    public String addShipToMatrix(Ship ship, Matrix matrix, String coordinates) {
+    public static String addShipToMatrix(Ship ship, Matrix matrix, String coordinates) {
 
         if (!ValidationService.areCoordinatesValid(coordinates))
             return "Incorrect coordinates";
@@ -40,7 +40,7 @@ public class ShipService {
         return "Ship added.";
     }
 
-    private boolean shipIsNotInBounds(List<String> encodedShip) {
+    private static boolean shipIsNotInBounds(List<String> encodedShip) {
 
         AtomicBoolean result = new AtomicBoolean(false);
 
@@ -58,7 +58,7 @@ public class ShipService {
         return result.get();
     }
 
-    private boolean shipIsOnAnother(List<String> encodedShip, Matrix matrix) {
+    private static boolean shipIsOnAnother(List<String> encodedShip, Matrix matrix) {
 
         AtomicBoolean result = new AtomicBoolean(false);
 
@@ -76,7 +76,7 @@ public class ShipService {
         return result.get();
     }
 
-    private boolean shipIsToCloseToAnother(List<String> encodedShip, Matrix matrix) {
+    private static boolean shipIsToCloseToAnother(List<String> encodedShip, Matrix matrix) {
 
         AtomicBoolean result = new AtomicBoolean(false);
 
@@ -94,7 +94,7 @@ public class ShipService {
         return result.get();
     }
 
-    private void addOffset(int x, int y, Matrix matrix) {
+    private static void addOffset(int x, int y, Matrix matrix) {
 
         if (x - 1 >= 0 && y - 1 >= 0)
             if (!areCoordinatesOccupied(matrix.getMatrix()[y - 1][x - 1]))
@@ -130,7 +130,7 @@ public class ShipService {
 
     }
 
-    private boolean areCoordinatesOccupied(String m) {
+    private static boolean areCoordinatesOccupied(String m) {
         return m.equals("C") || m.equals("B") || m.equals("D") || m.equals("S") || m.equals("P");
     }
 
