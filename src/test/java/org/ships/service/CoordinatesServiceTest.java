@@ -1,7 +1,7 @@
 package org.ships.service;
 
 import org.junit.jupiter.api.Test;
-import org.ships.service.CoordinatesService;
+import org.ships.ship.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,12 +28,22 @@ class CoordinatesServiceTest {
     }
 
     @Test
-    void shouldGetProperCoordinatesFromShipSet(){
+    void shouldGetProperCoordinatesFromShipSet() {
 
         assertEquals("a1", CoordinatesService.getCoordinatesFromShipSet("a1 n"));
         assertEquals("h10", CoordinatesService.getCoordinatesFromShipSet("h10 w"));
         assertEquals("a10", CoordinatesService.getCoordinatesFromShipSet("a10 n"));
         assertEquals("g5", CoordinatesService.getCoordinatesFromShipSet("g5 e"));
         assertEquals("e2", CoordinatesService.getCoordinatesFromShipSet("e2 s"));
+    }
+
+    @Test
+    void shouldGetProperVectorFromShipSet() {
+
+        assertEquals(Vector.NORTH, CoordinatesService.getVectorFromShipSet("a1 n"));
+        assertEquals(Vector.WEST, CoordinatesService.getVectorFromShipSet("h10 w"));
+        assertEquals(Vector.NORTH, CoordinatesService.getVectorFromShipSet("a10 n"));
+        assertEquals(Vector.EAST, CoordinatesService.getVectorFromShipSet("g5 e"));
+        assertEquals(Vector.SOUTH, CoordinatesService.getVectorFromShipSet("e2 s"));
     }
 }

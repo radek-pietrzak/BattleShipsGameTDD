@@ -1,5 +1,7 @@
 package org.ships.service;
 
+import org.ships.ship.Vector;
+
 import java.util.Locale;
 
 public class CoordinatesService {
@@ -34,9 +36,6 @@ public class CoordinatesService {
 
     public static String getCoordinatesFromShipSet(String set) {
 
-        if (!ValidationService.isShipSetValid(set))
-            throw new IllegalStateException("Unexpected value" + set);
-
         String coordinates = "";
 
         if (set.length() == 4) {
@@ -48,6 +47,31 @@ public class CoordinatesService {
         }
 
         return coordinates;
+    }
+
+    public static Vector getVectorFromShipSet(String set) {
+
+        Vector vector;
+
+        String vectorString = "";
+
+        if (set.length() == 4) {
+            vectorString = set.substring(3);
+        }
+
+        if (set.length() == 5) {
+            vectorString = set.substring(4);
+        }
+
+        switch (vectorString) {
+            case "n" -> vector = Vector.NORTH;
+            case "s" -> vector = Vector.SOUTH;
+            case "w" -> vector = Vector.WEST;
+            case "e" -> vector = Vector.EAST;
+            default -> throw new IllegalStateException("Unexpected value: " + vectorString);
+        }
+
+        return vector;
     }
 
 }
