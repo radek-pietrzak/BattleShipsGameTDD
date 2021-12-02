@@ -31,7 +31,7 @@ class MapTest {
                 """;
         //when
         //then
-        assertEquals(result, map.drawMaps(matrix, matrix));
+        assertEquals(result, map.constructMaps(matrix, matrix));
     }
 
     @Test
@@ -72,7 +72,7 @@ class MapTest {
 
         //when
         //then
-        assertEquals(result, map.drawMaps(matrixAlly, matrixEnemy));
+        assertEquals(result, map.constructMaps(matrixAlly, matrixEnemy));
     }
 
 }

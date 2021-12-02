@@ -2,7 +2,7 @@ package org.ships;
 
 public class Map {
 
-    public String drawMaps(Matrix matrixAlly, Matrix matrixEnemy) {
+    public String constructMaps(Matrix matrixAlly, Matrix matrixEnemy) {
 
         StringBuilder sb = new StringBuilder();
 

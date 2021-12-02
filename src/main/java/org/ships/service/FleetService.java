@@ -88,6 +88,18 @@ public class FleetService {
         return "Ship added.";
     }
 
+    public static int getShipLength(Ship ship) {
+        int shipLength;
+
+        switch (ship){
+            case CARRIER -> shipLength = 5;
+            case BATTLESHIP -> shipLength = 4;
+            case DESTROYER, SUBMARINE -> shipLength = 3;
+            case PATROL_BOAT -> shipLength = 2;
+            default -> throw new IllegalStateException("Unexpected value: " + ship);
+        }
+        return shipLength;
+    }
 
 
     private static boolean shipIsNotInBounds(List<String> encodedShip) {
