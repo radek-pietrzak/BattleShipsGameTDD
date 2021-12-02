@@ -1,7 +1,7 @@
 package org.ships.service;
 
 import org.junit.jupiter.api.Test;
-import org.ships.ship.Vector;
+import org.ships.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 

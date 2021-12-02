@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.function.Executable;
 import org.ships.Matrix;
+import org.ships.Ship;
+import org.ships.Vector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.spy;
 
-class ShipServiceTest {
+class FleetServiceTest {
 
     private final Matrix matrix = new Matrix();
 
@@ -45,13 +47,13 @@ class ShipServiceTest {
         };
 
         //when
-        ShipService.addEncodedShipToMatrix(carrierEncoded, matrix);
-        ShipService.addEncodedShipToMatrix(battleshipEncoded, matrix);
-        ShipService.addEncodedShipToMatrix(submarineEncoded, matrix);
-        ShipService.addEncodedShipToMatrix(destroyerEncoded, matrix);
-        ShipService.addEncodedShipToMatrix(patrolBoat1Encoded, matrix);
-        ShipService.addEncodedShipToMatrix(patrolBoat2Encoded, matrix);
-        ShipService.addEncodedShipToMatrix(patrolBoat3Encoded, matrix);
+        FleetService.addEncodedShipToMatrix(carrierEncoded, matrix);
+        FleetService.addEncodedShipToMatrix(battleshipEncoded, matrix);
+        FleetService.addEncodedShipToMatrix(submarineEncoded, matrix);
+        FleetService.addEncodedShipToMatrix(destroyerEncoded, matrix);
+        FleetService.addEncodedShipToMatrix(patrolBoat1Encoded, matrix);
+        FleetService.addEncodedShipToMatrix(patrolBoat2Encoded, matrix);
+        FleetService.addEncodedShipToMatrix(patrolBoat3Encoded, matrix);
 
         //then
         assertEquals(Arrays.deepToString(result), Arrays.deepToString(matrix.getMatrix()));
@@ -75,13 +77,13 @@ class ShipServiceTest {
 
         //when
         //then
-        Executable execCarrier = () -> assertEquals(result, ShipService.addEncodedShipToMatrix(carrierEncoded, matrix));
-        Executable execBattleship = () -> assertEquals(result, ShipService.addEncodedShipToMatrix(battleshipEncoded, matrix));
-        Executable execSubmarine = () -> assertEquals(result, ShipService.addEncodedShipToMatrix(submarineEncoded, matrix));
-        Executable execDestroyer = () -> assertEquals(result, ShipService.addEncodedShipToMatrix(destroyerEncoded, matrix));
-        Executable execPatrol1 = () -> assertEquals(result, ShipService.addEncodedShipToMatrix(patrolBoat1Encoded, matrix));
-        Executable execPatrol2 = () -> assertEquals(result, ShipService.addEncodedShipToMatrix(patrolBoat2Encoded, matrix));
-        Executable execPatrol3 = () -> assertEquals(result, ShipService.addEncodedShipToMatrix(patrolBoat3Encoded, matrix));
+        Executable execCarrier = () -> assertEquals(result, FleetService.addEncodedShipToMatrix(carrierEncoded, matrix));
+        Executable execBattleship = () -> assertEquals(result, FleetService.addEncodedShipToMatrix(battleshipEncoded, matrix));
+        Executable execSubmarine = () -> assertEquals(result, FleetService.addEncodedShipToMatrix(submarineEncoded, matrix));
+        Executable execDestroyer = () -> assertEquals(result, FleetService.addEncodedShipToMatrix(destroyerEncoded, matrix));
+        Executable execPatrol1 = () -> assertEquals(result, FleetService.addEncodedShipToMatrix(patrolBoat1Encoded, matrix));
+        Executable execPatrol2 = () -> assertEquals(result, FleetService.addEncodedShipToMatrix(patrolBoat2Encoded, matrix));
+        Executable execPatrol3 = () -> assertEquals(result, FleetService.addEncodedShipToMatrix(patrolBoat3Encoded, matrix));
 
         DynamicTest testCarrier = DynamicTest.dynamicTest("carrier", execCarrier);
         DynamicTest testBattleship = DynamicTest.dynamicTest("battleship", execBattleship);
@@ -130,8 +132,8 @@ class ShipServiceTest {
 
         //when
         //then
-        assertEquals(result, ShipService.addEncodedShipToMatrix(destroyerEncoded, matrix));
-        assertEquals(result, ShipService.addEncodedShipToMatrix(patrolBoatEncoded, matrix));
+        assertEquals(result, FleetService.addEncodedShipToMatrix(destroyerEncoded, matrix));
+        assertEquals(result, FleetService.addEncodedShipToMatrix(patrolBoatEncoded, matrix));
     }
 
     @Test
@@ -167,13 +169,13 @@ class ShipServiceTest {
 
         //when
         //then
-        assertEquals(result, ShipService.addEncodedShipToMatrix(carrierEncoded, matrix));
-        assertEquals(result, ShipService.addEncodedShipToMatrix(battleshipEncoded, matrix));
-        assertEquals(result, ShipService.addEncodedShipToMatrix(submarineEncoded, matrix));
-        assertEquals(result, ShipService.addEncodedShipToMatrix(destroyerEncoded, matrix));
-        assertEquals(result, ShipService.addEncodedShipToMatrix(patrolBoat1Encoded, matrix));
-        assertEquals(result, ShipService.addEncodedShipToMatrix(patrolBoat2Encoded, matrix));
-        assertEquals(result, ShipService.addEncodedShipToMatrix(patrolBoat3Encoded, matrix));
+        assertEquals(result, FleetService.addEncodedShipToMatrix(carrierEncoded, matrix));
+        assertEquals(result, FleetService.addEncodedShipToMatrix(battleshipEncoded, matrix));
+        assertEquals(result, FleetService.addEncodedShipToMatrix(submarineEncoded, matrix));
+        assertEquals(result, FleetService.addEncodedShipToMatrix(destroyerEncoded, matrix));
+        assertEquals(result, FleetService.addEncodedShipToMatrix(patrolBoat1Encoded, matrix));
+        assertEquals(result, FleetService.addEncodedShipToMatrix(patrolBoat2Encoded, matrix));
+        assertEquals(result, FleetService.addEncodedShipToMatrix(patrolBoat3Encoded, matrix));
     }
 
     @Test
@@ -186,7 +188,30 @@ class ShipServiceTest {
 
         //when
         //then
-        assertEquals(result, ShipService.addEncodedShipToMatrix(battleshipEncoded, matrix));
+        assertEquals(result, FleetService.addEncodedShipToMatrix(battleshipEncoded, matrix));
+    }
+
+    @Test
+    void shouldEncodeShipWithCoordinatesAndVectorProperly() {
+
+        //given
+        List<String> carrierEncoded = List.of("C.0,5","C.1,5","C.2,5","C.3,5","C.4,5");
+        List<String> battleshipEncoded = List.of("B.8,8","B.8,7","B.8,6","B.8,5");
+        List<String> submarineEncoded = List.of("S.9,3","S.8,3","S.7,3");
+        List<String> destroyerEncoded = List.of("D.3,1","D.3,2","D.3,3");
+        List<String> patrolBoat1Encoded = List.of("P.1,1","P.1,2");
+        List<String> patrolBoat2Encoded = List.of("P.3,9","P.3,8");
+        List<String> patrolBoat3Encoded = List.of("P.5,8","P.6,8");
+
+        //when
+        //then
+        assertEquals(carrierEncoded, FleetService.encodeShipWithCoordinatesAndVector(Ship.CARRIER, Vector.EAST, "a6"));
+        assertEquals(battleshipEncoded, FleetService.encodeShipWithCoordinatesAndVector(Ship.BATTLESHIP, Vector.NORTH, "i9"));
+        assertEquals(submarineEncoded, FleetService.encodeShipWithCoordinatesAndVector(Ship.SUBMARINE, Vector.WEST, "j4"));
+        assertEquals(destroyerEncoded, FleetService.encodeShipWithCoordinatesAndVector(Ship.DESTROYER, Vector.SOUTH, "d2"));
+        assertEquals(patrolBoat1Encoded, FleetService.encodeShipWithCoordinatesAndVector(Ship.PATROL_BOAT, Vector.SOUTH,"b2"));
+        assertEquals(patrolBoat2Encoded, FleetService.encodeShipWithCoordinatesAndVector(Ship.PATROL_BOAT,Vector.NORTH, "d10"));
+        assertEquals(patrolBoat3Encoded, FleetService.encodeShipWithCoordinatesAndVector(Ship.PATROL_BOAT, Vector.EAST,"f9"));
     }
 
 }

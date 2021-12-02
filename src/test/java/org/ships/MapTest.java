@@ -1,10 +1,6 @@
 package org.ships;
 
 import org.junit.jupiter.api.Test;
-import org.ships.service.ShipService;
-import org.ships.ship.Ship;
-import org.ships.ship.ShipType;
-import org.ships.ship.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;

@@ -1,4 +1,4 @@
-package org.ships.ship;
+package org.ships;
 
 public enum Vector {
 

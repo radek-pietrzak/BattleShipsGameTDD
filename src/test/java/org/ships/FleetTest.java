@@ -1,7 +1,6 @@
 package org.ships;
 
 import org.junit.jupiter.api.Test;
-import org.ships.ship.ShipType;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,26 +21,26 @@ class FleetTest {
 
         //then
         assertThat(fleet.getFleet(), hasSize(7));
-        assertThat(fleet.getFleet().get(0), equalTo(ShipType.CARRIER));
-        assertThat(fleet.getFleet().get(1), equalTo(ShipType.BATTLESHIP));
-        assertThat(fleet.getFleet().get(2), equalTo(ShipType.DESTROYER));
-        assertThat(fleet.getFleet().get(3), equalTo(ShipType.SUBMARINE));
-        assertThat(fleet.getFleet().get(4), equalTo(ShipType.PATROL_BOAT));
-        assertThat(fleet.getFleet().get(5), equalTo(ShipType.PATROL_BOAT));
-        assertThat(fleet.getFleet().get(6), equalTo(ShipType.PATROL_BOAT));
+        assertThat(fleet.getFleet().get(0), equalTo(Ship.CARRIER));
+        assertThat(fleet.getFleet().get(1), equalTo(Ship.BATTLESHIP));
+        assertThat(fleet.getFleet().get(2), equalTo(Ship.DESTROYER));
+        assertThat(fleet.getFleet().get(3), equalTo(Ship.SUBMARINE));
+        assertThat(fleet.getFleet().get(4), equalTo(Ship.PATROL_BOAT));
+        assertThat(fleet.getFleet().get(5), equalTo(Ship.PATROL_BOAT));
+        assertThat(fleet.getFleet().get(6), equalTo(Ship.PATROL_BOAT));
     }
 
     @Test
     void shouldRemoveFirstShipTypeFromFleet() {
 
         //given
-        List<ShipType> expectedFleet = List.of(
-                ShipType.BATTLESHIP,
-                ShipType.DESTROYER,
-                ShipType.SUBMARINE,
-                ShipType.PATROL_BOAT,
-                ShipType.PATROL_BOAT,
-                ShipType.PATROL_BOAT
+        List<Ship> expectedFleet = List.of(
+                Ship.BATTLESHIP,
+                Ship.DESTROYER,
+                Ship.SUBMARINE,
+                Ship.PATROL_BOAT,
+                Ship.PATROL_BOAT,
+                Ship.PATROL_BOAT
         );
 
         //when
@@ -50,14 +49,14 @@ class FleetTest {
 
         //then
         assertEquals(expectedFleet, fleet.getFleet());
-        assertThat(fleet.getFleet().get(0), equalTo(ShipType.BATTLESHIP));
+        assertThat(fleet.getFleet().get(0), equalTo(Ship.BATTLESHIP));
     }
 
     @Test
     void shouldRemoveAllShipTypesFromFleet() {
 
         //given
-        List<ShipType> expectedFleet = Collections.emptyList();
+        List<Ship> expectedFleet = Collections.emptyList();
 
         //when
         fleet.addShipTypesToFleet();

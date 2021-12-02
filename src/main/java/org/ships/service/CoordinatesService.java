@@ -1,6 +1,6 @@
 package org.ships.service;
 
-import org.ships.ship.Vector;
+import org.ships.Vector;
 
 import java.util.Locale;
 

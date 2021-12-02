@@ -1,23 +1,24 @@
 package org.ships.service;
 
-import org.ships.ship.Ship;
-import org.ships.ship.ShipType;
+import org.ships.Ship;
+import org.ships.Vector;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class InputService {
 
-    public static List<String> createEncodedShipFromInput(ShipType shipType) {
+    public static List<String> createEncodedShipFromInput(Ship ship) {
 
         String input = getInput();
 
         if (!ValidationService.isShipSetValid(input))
             return null;
 
-        Ship ship = new Ship(shipType, CoordinatesService.getVectorFromShipSet(input));
+        String coordinates = CoordinatesService.getCoordinatesFromShipSet(input);
+        Vector vector = CoordinatesService.getVectorFromShipSet(input);
 
-        return Ship.encodeShipToCoordinates(ship, CoordinatesService.getCoordinatesFromShipSet(input));
+        return FleetService.encodeShipWithCoordinatesAndVector(ship, vector, coordinates);
 
     }
 

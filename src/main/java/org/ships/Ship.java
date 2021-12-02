@@ -1,6 +1,6 @@
-package org.ships.ship;
+package org.ships;
 
-public enum ShipType {
+public enum Ship {
 
     CARRIER, BATTLESHIP, DESTROYER, SUBMARINE, PATROL_BOAT
 }
