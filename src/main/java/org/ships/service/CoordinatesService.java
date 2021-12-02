@@ -74,4 +74,28 @@ public class CoordinatesService {
         return vector;
     }
 
+    public static String getCoordinatesFromXY(int x, int y) {
+
+        StringBuilder result = new StringBuilder();
+
+        switch (x) {
+            case 0 -> result.append("a");
+            case 1 -> result.append('b');
+            case 2 -> result.append('c');
+            case 3 -> result.append('d');
+            case 4 -> result.append('e');
+            case 5 -> result.append('f');
+            case 6 -> result.append('g');
+            case 7 -> result.append('h');
+            case 8 -> result.append('i');
+            case 9 -> result.append('j');
+            default -> throw new IllegalStateException("Unexpected value: " + x);
+        }
+        ;
+
+        result.append(y + 1);
+
+        return result.toString();
+    }
+
 }

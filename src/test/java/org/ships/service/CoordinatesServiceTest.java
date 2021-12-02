@@ -3,6 +3,8 @@ package org.ships.service;
 import org.junit.jupiter.api.Test;
 import org.ships.Vector;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CoordinatesServiceTest {
@@ -45,5 +47,13 @@ class CoordinatesServiceTest {
         assertEquals(Vector.NORTH, CoordinatesService.getVectorFromShipSet("a10 n"));
         assertEquals(Vector.EAST, CoordinatesService.getVectorFromShipSet("g5 e"));
         assertEquals(Vector.SOUTH, CoordinatesService.getVectorFromShipSet("e2 s"));
+    }
+
+    @Test
+    void shouldGetCoordinatesFromXY() {
+
+        assertThat(CoordinatesService.getCoordinatesFromXY(0, 0), equalTo("a1"));
+        assertThat(CoordinatesService.getCoordinatesFromXY(1, 2), equalTo("b3"));
+        assertThat(CoordinatesService.getCoordinatesFromXY(9, 9), equalTo("j10"));
     }
 }
