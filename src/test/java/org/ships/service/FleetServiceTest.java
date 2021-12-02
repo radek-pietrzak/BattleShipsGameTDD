@@ -63,7 +63,7 @@ class FleetServiceTest {
     Collection<DynamicTest> shouldReturnShipOutOfBounds() {
 
         //given
-        String result = "Ship out of bounds.";
+        String result = "Ship out of bounds.ERROR";
 
         List<String> carrierEncoded = List.of("C.-1,5", "C.0,5", "C.1,5", "C.2,5", "C.3,5");
         List<String> battleshipEncoded = List.of("B.8,8", "B.8,9", "B.8,10", "B.8,11");
@@ -109,7 +109,7 @@ class FleetServiceTest {
 
         //given
         Matrix matrix = spy(Matrix.class);
-        String result = "Ship on another.";
+        String result = "Ship on another.ERROR";
 
         List<String> destroyerEncoded = List.of("D.1,0", "D.1,1", "D.1,2");
         List<String> patrolBoatEncoded = List.of("P.5,2", "P.5,1");
@@ -141,7 +141,7 @@ class FleetServiceTest {
 
         //given
         Matrix matrix = spy(Matrix.class);
-        String result = "Ship too close to another.";
+        String result = "Ship too close to another.ERROR";
 
         List<String> carrierEncoded = List.of("C.0,0", "C.1,0", "C.2,0", "C.3,0", "C.4,0");
         List<String> battleshipEncoded = List.of("B.7,8", "B.7,7", "B.7,6", "B.7,5");

@@ -16,7 +16,7 @@ class InputServiceTest {
 
     @ParameterizedTest
     @MethodSource("createShipsTypesWithInputs")
-    void shouldReturnProperEncodedShip(Ship ship, String input) {
+    void shouldReturnProperlyEncodedShip(Ship ship, String input) {
 
         //given
         List<String> expectedResult = new LinkedList<>();

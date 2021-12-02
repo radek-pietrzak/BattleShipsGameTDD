@@ -12,11 +12,6 @@ public class Game {
     private final Map map = new Map();
     private final Fleet allyFleet = new Fleet();
     private final Fleet enemyFleet = new Fleet();
-    private final List<Ship> ships = new LinkedList<>();
-
-    public List<Ship> getShipTypes() {
-        return ships;
-    }
 
     public void startGame() {
 
@@ -40,8 +35,15 @@ public class Game {
         System.out.println(map.drawMaps(matrixAlly, matrixEnemy));
         System.out.println("Set " + allyFleet.getFleet().get(0).toString().toLowerCase(Locale.ROOT) + ".");
         List<String> encodedShip = InputService.createEncodedShipFromInput(allyFleet.getFleet().get(0));
-        FleetService.addEncodedShipToMatrix(encodedShip, matrixAlly);
-        allyFleet.removeFirstShipTypeFromFleet();
+
+        String setShipResult = FleetService.addEncodedShipToMatrix(encodedShip, matrixAlly);
+
+        if (!setShipResult.contains("ERROR")) {
+            System.out.println(setShipResult);
+            allyFleet.removeFirstShipTypeFromFleet();
+        } else {
+            System.out.println(setShipResult.replace("ERROR", ""));
+        }
     }
 
     private void enemySetFleetTurn() {

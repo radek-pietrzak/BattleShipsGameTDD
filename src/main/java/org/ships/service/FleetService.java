@@ -64,13 +64,13 @@ public class FleetService {
     public static String addEncodedShipToMatrix(List<String > encodedShip, Matrix matrix) {
 
         if (shipIsNotInBounds(encodedShip))
-            return "Ship out of bounds.";
+            return "Ship out of bounds.ERROR";
 
         if (shipIsOnAnother(encodedShip, matrix))
-            return "Ship on another.";
+            return "Ship on another.ERROR";
 
         if (shipIsToCloseToAnother(encodedShip, matrix))
-            return "Ship too close to another.";
+            return "Ship too close to another.ERROR";
 
         encodedShip.forEach(c -> {
             String type = c.substring(0, 1);
