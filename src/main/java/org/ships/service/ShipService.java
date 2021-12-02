@@ -8,12 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ShipService {
 
-    public static String addShipToMatrix(Ship ship, Matrix matrix, String coordinates) {
-
-        if (!ValidationService.areCoordinatesValid(coordinates))
-            return "Incorrect coordinates";
-
-        List<String> encodedShip = Ship.encodeShipToCoordinates(ship, coordinates);
+    public static String addEncodedShipToMatrix(List<String > encodedShip, Matrix matrix) {
 
         if (shipIsNotInBounds(encodedShip))
             return "Ship out of bounds.";

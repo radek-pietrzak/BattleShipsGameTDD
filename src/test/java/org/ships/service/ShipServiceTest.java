@@ -5,13 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.function.Executable;
 import org.ships.Matrix;
-import org.ships.ship.Ship;
-import org.ships.ship.ShipType;
-import org.ships.ship.Vector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -19,20 +17,19 @@ import static org.mockito.Mockito.spy;
 
 class ShipServiceTest {
 
-    private final ShipService shipService = new ShipService();
     private final Matrix matrix = new Matrix();
 
     @Test
     void shouldAddShipsToMatrix() {
 
         //given
-        Ship carrier = new Ship(ShipType.CARRIER, Vector.EAST);
-        Ship battleship = new Ship(ShipType.BATTLESHIP, Vector.NORTH);
-        Ship submarine = new Ship(ShipType.SUBMARINE, Vector.WEST);
-        Ship destroyer = new Ship(ShipType.DESTROYER, Vector.SOUTH);
-        Ship patrolBoat1 = new Ship(ShipType.PATROL_BOAT, Vector.SOUTH);
-        Ship patrolBoat2 = new Ship(ShipType.PATROL_BOAT, Vector.NORTH);
-        Ship patrolBoat3 = new Ship(ShipType.PATROL_BOAT, Vector.EAST);
+        List<String> carrierEncoded = List.of("C.0,5", "C.1,5", "C.2,5", "C.3,5", "C.4,5");
+        List<String> battleshipEncoded = List.of("B.8,8", "B.8,7", "B.8,6", "B.8,5");
+        List<String> submarineEncoded = List.of("S.9,3", "S.8,3", "S.7,3");
+        List<String> destroyerEncoded = List.of("D.3,1", "D.3,2", "D.3,3");
+        List<String> patrolBoat1Encoded = List.of("P.1,1", "P.1,2");
+        List<String> patrolBoat2Encoded = List.of("P.3,9", "P.3,8");
+        List<String> patrolBoat3Encoded = List.of("P.5,8", "P.6,8");
 
         String[][] result = {
                 {"!", "!", "!", "!", "!", " ", " ", " ", " ", " ",},
@@ -48,13 +45,13 @@ class ShipServiceTest {
         };
 
         //when
-        shipService.addShipToMatrix(carrier, matrix, "a6");
-        shipService.addShipToMatrix(battleship, matrix, "i9");
-        shipService.addShipToMatrix(submarine, matrix, "j4");
-        shipService.addShipToMatrix(destroyer, matrix, "d2");
-        shipService.addShipToMatrix(patrolBoat1, matrix, "b2");
-        shipService.addShipToMatrix(patrolBoat2, matrix, "d10");
-        shipService.addShipToMatrix(patrolBoat3, matrix, "f9");
+        ShipService.addEncodedShipToMatrix(carrierEncoded, matrix);
+        ShipService.addEncodedShipToMatrix(battleshipEncoded, matrix);
+        ShipService.addEncodedShipToMatrix(submarineEncoded, matrix);
+        ShipService.addEncodedShipToMatrix(destroyerEncoded, matrix);
+        ShipService.addEncodedShipToMatrix(patrolBoat1Encoded, matrix);
+        ShipService.addEncodedShipToMatrix(patrolBoat2Encoded, matrix);
+        ShipService.addEncodedShipToMatrix(patrolBoat3Encoded, matrix);
 
         //then
         assertEquals(Arrays.deepToString(result), Arrays.deepToString(matrix.getMatrix()));
@@ -66,25 +63,25 @@ class ShipServiceTest {
         //given
         String result = "Ship out of bounds.";
 
-        Ship carrier = new Ship(ShipType.CARRIER, Vector.EAST);
-        Ship battleship = new Ship(ShipType.BATTLESHIP, Vector.NORTH);
-        Ship submarine = new Ship(ShipType.SUBMARINE, Vector.WEST);
-        Ship destroyer = new Ship(ShipType.DESTROYER, Vector.SOUTH);
-        Ship patrolBoat1 = new Ship(ShipType.PATROL_BOAT, Vector.SOUTH);
-        Ship patrolBoat2 = new Ship(ShipType.PATROL_BOAT, Vector.NORTH);
-        Ship patrolBoat3 = new Ship(ShipType.PATROL_BOAT, Vector.EAST);
+        List<String> carrierEncoded = List.of("C.-1,5", "C.0,5", "C.1,5", "C.2,5", "C.3,5");
+        List<String> battleshipEncoded = List.of("B.8,8", "B.8,9", "B.8,10", "B.8,11");
+        List<String> submarineEncoded = List.of("S.10,3", "S.9,3", "S.8,3");
+        List<String> destroyerEncoded = List.of("D.3,-1", "D.3,0", "D.3,1");
+        List<String> patrolBoat1Encoded = List.of("P.-1,-1", "P.0,-1");
+        List<String> patrolBoat2Encoded = List.of("P.-11,9", "P.-12,8");
+        List<String> patrolBoat3Encoded = List.of("P.0,0", "P.0,-1");
 
         Collection<DynamicTest> dynamicTests = new ArrayList<>();
 
         //when
         //then
-        Executable execCarrier = () -> assertEquals(result, shipService.addShipToMatrix(carrier, matrix, "g3"));
-        Executable execBattleship = () -> assertEquals(result, shipService.addShipToMatrix(battleship, matrix, "a3"));
-        Executable execSubmarine = () -> assertEquals(result, shipService.addShipToMatrix(submarine, matrix, "b5"));
-        Executable execDestroyer = () -> assertEquals(result, shipService.addShipToMatrix(destroyer, matrix, "h10"));
-        Executable execPatrol1 = () -> assertEquals(result, shipService.addShipToMatrix(patrolBoat1, matrix, "a10"));
-        Executable execPatrol2 = () -> assertEquals(result, shipService.addShipToMatrix(patrolBoat2, matrix, "c1"));
-        Executable execPatrol3 = () -> assertEquals(result, shipService.addShipToMatrix(patrolBoat3, matrix, "j5"));
+        Executable execCarrier = () -> assertEquals(result, ShipService.addEncodedShipToMatrix(carrierEncoded, matrix));
+        Executable execBattleship = () -> assertEquals(result, ShipService.addEncodedShipToMatrix(battleshipEncoded, matrix));
+        Executable execSubmarine = () -> assertEquals(result, ShipService.addEncodedShipToMatrix(submarineEncoded, matrix));
+        Executable execDestroyer = () -> assertEquals(result, ShipService.addEncodedShipToMatrix(destroyerEncoded, matrix));
+        Executable execPatrol1 = () -> assertEquals(result, ShipService.addEncodedShipToMatrix(patrolBoat1Encoded, matrix));
+        Executable execPatrol2 = () -> assertEquals(result, ShipService.addEncodedShipToMatrix(patrolBoat2Encoded, matrix));
+        Executable execPatrol3 = () -> assertEquals(result, ShipService.addEncodedShipToMatrix(patrolBoat3Encoded, matrix));
 
         DynamicTest testCarrier = DynamicTest.dynamicTest("carrier", execCarrier);
         DynamicTest testBattleship = DynamicTest.dynamicTest("battleship", execBattleship);
@@ -112,8 +109,8 @@ class ShipServiceTest {
         Matrix matrix = spy(Matrix.class);
         String result = "Ship on another.";
 
-        Ship destroyer = new Ship(ShipType.DESTROYER, Vector.SOUTH);
-        Ship patrolBoat2 = new Ship(ShipType.PATROL_BOAT, Vector.NORTH);
+        List<String> destroyerEncoded = List.of("D.1,0", "D.1,1", "D.1,2");
+        List<String> patrolBoatEncoded = List.of("P.5,2", "P.5,1");
 
         String[][] givenMatrix = {
                 {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
@@ -133,8 +130,8 @@ class ShipServiceTest {
 
         //when
         //then
-        assertEquals(result, shipService.addShipToMatrix(destroyer, matrix, "b1"));
-        assertEquals(result, shipService.addShipToMatrix(patrolBoat2, matrix, "f3"));
+        assertEquals(result, ShipService.addEncodedShipToMatrix(destroyerEncoded, matrix));
+        assertEquals(result, ShipService.addEncodedShipToMatrix(patrolBoatEncoded, matrix));
     }
 
     @Test
@@ -144,13 +141,13 @@ class ShipServiceTest {
         Matrix matrix = spy(Matrix.class);
         String result = "Ship too close to another.";
 
-        Ship carrier = new Ship(ShipType.CARRIER, Vector.EAST);
-        Ship battleship = new Ship(ShipType.BATTLESHIP, Vector.NORTH);
-        Ship submarine = new Ship(ShipType.SUBMARINE, Vector.WEST);
-        Ship destroyer = new Ship(ShipType.DESTROYER, Vector.SOUTH);
-        Ship patrolBoat1 = new Ship(ShipType.PATROL_BOAT, Vector.SOUTH);
-        Ship patrolBoat2 = new Ship(ShipType.PATROL_BOAT, Vector.NORTH);
-        Ship patrolBoat3 = new Ship(ShipType.PATROL_BOAT, Vector.EAST);
+        List<String> carrierEncoded = List.of("C.0,0", "C.1,0", "C.2,0", "C.3,0", "C.4,0");
+        List<String> battleshipEncoded = List.of("B.7,8", "B.7,7", "B.7,6", "B.7,5");
+        List<String> submarineEncoded = List.of("S.7,6", "S.6,6", "S.5,6");
+        List<String> destroyerEncoded = List.of("D.6,0", "D.6,1", "D.6,2");
+        List<String> patrolBoat1Encoded = List.of("P.9,1", "P.9,2");
+        List<String> patrolBoat2Encoded = List.of("P.9,2", "P.9,1");
+        List<String> patrolBoat3Encoded = List.of("P.6,6", "P.5,6");
 
         String[][] givenMatrix = {
                 {"!", "!", "!", "!", "!", " ", " ", " ", " ", " ",},
@@ -170,13 +167,13 @@ class ShipServiceTest {
 
         //when
         //then
-        assertEquals(result, shipService.addShipToMatrix(carrier, matrix, "a1"));
-        assertEquals(result, shipService.addShipToMatrix(battleship, matrix, "h9"));
-        assertEquals(result, shipService.addShipToMatrix(submarine, matrix, "h3"));
-        assertEquals(result, shipService.addShipToMatrix(destroyer, matrix, "g1"));
-        assertEquals(result, shipService.addShipToMatrix(patrolBoat1, matrix, "j2"));
-        assertEquals(result, shipService.addShipToMatrix(patrolBoat2, matrix, "j3"));
-        assertEquals(result, shipService.addShipToMatrix(patrolBoat3, matrix, "g7"));
+        assertEquals(result, ShipService.addEncodedShipToMatrix(carrierEncoded, matrix));
+        assertEquals(result, ShipService.addEncodedShipToMatrix(battleshipEncoded, matrix));
+        assertEquals(result, ShipService.addEncodedShipToMatrix(submarineEncoded, matrix));
+        assertEquals(result, ShipService.addEncodedShipToMatrix(destroyerEncoded, matrix));
+        assertEquals(result, ShipService.addEncodedShipToMatrix(patrolBoat1Encoded, matrix));
+        assertEquals(result, ShipService.addEncodedShipToMatrix(patrolBoat2Encoded, matrix));
+        assertEquals(result, ShipService.addEncodedShipToMatrix(patrolBoat3Encoded, matrix));
     }
 
     @Test
@@ -184,12 +181,12 @@ class ShipServiceTest {
 
         //given
         String result = "Ship added.";
-        Ship ship = new Ship(ShipType.BATTLESHIP, Vector.EAST);
-        String position = "a1";
+
+        List<String> battleshipEncoded = List.of("B.0,0", "B.1,0", "B.2,0", "B.3,0");
 
         //when
         //then
-        assertEquals(result, shipService.addShipToMatrix(ship, matrix, position));
+        assertEquals(result, ShipService.addEncodedShipToMatrix(battleshipEncoded, matrix));
     }
 
 }

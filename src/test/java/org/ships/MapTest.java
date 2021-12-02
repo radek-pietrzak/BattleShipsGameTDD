@@ -7,6 +7,8 @@ import org.ships.ship.ShipType;
 import org.ships.ship.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.spy;
 
 class MapTest {
 
@@ -40,17 +42,8 @@ class MapTest {
     void shouldDrawMapsAccordingToMatrix() {
 
         //given
-        ShipService shipService = new ShipService();
-        Matrix matrixAlly = new Matrix();
+        Matrix matrixAlly = spy(Matrix.class);
         Matrix matrixEnemy = new Matrix();
-
-        Ship carrier = new Ship(ShipType.CARRIER, Vector.EAST);
-        Ship battleship = new Ship(ShipType.BATTLESHIP, Vector.NORTH);
-        Ship submarine = new Ship(ShipType.SUBMARINE, Vector.WEST);
-        Ship destroyer = new Ship(ShipType.DESTROYER, Vector.SOUTH);
-        Ship patrolBoat1 = new Ship(ShipType.PATROL_BOAT, Vector.SOUTH);
-        Ship patrolBoat2 = new Ship(ShipType.PATROL_BOAT, Vector.NORTH);
-        Ship patrolBoat3 = new Ship(ShipType.PATROL_BOAT, Vector.EAST);
 
         String result = """
                    A|B|C|D|E|F|G|H|I|J|     A|B|C|D|E|F|G|H|I|J|\r
@@ -66,15 +59,22 @@ class MapTest {
                 10| | | |P| | | | | | |  10| | | | | | | | | | |\r
                 """;
 
-        //when
-        shipService.addShipToMatrix(carrier, matrixAlly, "a6");
-        shipService.addShipToMatrix(battleship, matrixAlly,  "i9");
-        shipService.addShipToMatrix(submarine, matrixAlly,  "j4");
-        shipService.addShipToMatrix(destroyer, matrixAlly,  "d2");
-        shipService.addShipToMatrix(patrolBoat1, matrixAlly,  "b2");
-        shipService.addShipToMatrix(patrolBoat2, matrixAlly,  "d10");
-        shipService.addShipToMatrix(patrolBoat3, matrixAlly,  "f9");
+        String[][] givenMatrix = {
+                {"!", "!", "!", "!", "!", " ", " ", " ", " ", " ",},
+                {"!", "P", "!", "D", "!", " ", " ", " ", " ", " ",},
+                {"!", "P", "!", "D", "!", " ", "!", "!", "!", "!",},
+                {"!", "!", "!", "D", "!", " ", "!", "S", "S", "S",},
+                {"!", "!", "!", "!", "!", "!", "!", "!", "!", "!",},
+                {"C", "C", "C", "C", "C", "!", " ", "!", "B", "!",},
+                {"!", "!", "!", "!", "!", "!", " ", "!", "B", "!",},
+                {" ", " ", "!", "!", "!", "!", "!", "!", "B", "!",},
+                {" ", " ", "!", "P", "!", "P", "P", "!", "B", "!",},
+                {" ", " ", "!", "P", "!", "!", "!", "!", "!", "!",}
+        };
 
+        given(matrixAlly.getMatrix()).willReturn(givenMatrix);
+
+        //when
         //then
         assertEquals(result, map.drawMaps(matrixAlly, matrixEnemy));
     }

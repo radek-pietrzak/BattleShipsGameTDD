@@ -10,8 +10,7 @@ public class InputService {
 
     public static List<String> createEncodedShipFromInput(ShipType shipType) {
 
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
+        String input = getInput();
 
         if (!ValidationService.isShipSetValid(input))
             return null;
@@ -20,5 +19,10 @@ public class InputService {
 
         return Ship.encodeShipToCoordinates(ship, CoordinatesService.getCoordinatesFromShipSet(input));
 
+    }
+
+    private static String getInput() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine();
     }
 }
