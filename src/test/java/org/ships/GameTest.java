@@ -28,7 +28,7 @@ class GameTest {
         result.add(ShipType.PATROL_BOAT);
 
         //when
-        game.startGame(new Matrix(), new Matrix());
+        game.startGame();
 
         //then
         assertEquals(result.toString(), game.getShipTypes().toString());

@@ -1,44 +1,53 @@
 package org.ships;
 
-import org.ships.service.CoordinatesService;
 import org.ships.service.InputService;
 import org.ships.service.ShipService;
-import org.ships.service.ShootService;
-import org.ships.ship.Ship;
 import org.ships.ship.ShipType;
 
 import java.util.*;
 
 public class Game {
 
+    private final Matrix matrixAlly = new Matrix();
+    private final Matrix matrixEnemy = new Matrix();
     private final Map map = new Map();
-    private final Fleet fleet = new Fleet();
-    private final ShootService shootService = new ShootService();
+    private final Fleet allyFleet = new Fleet();
+    private final Fleet enemyFleet = new Fleet();
     private final List<ShipType> shipTypes = new LinkedList<>();
-    private final List<Ship> allyShips = new ArrayList<>();
-    private final List<Ship> enemyShips = new ArrayList<>();
 
     public List<ShipType> getShipTypes() {
         return shipTypes;
     }
 
-    public void startGame(Matrix matrixAlly, Matrix matrixEnemy) {
+    public void startGame() {
 
-        map.drawMaps(matrixAlly, matrixEnemy);
+        allyFleet.addShipTypesToFleet();
 
-        while(!fleet.getFleet().isEmpty()){
-
-            List<String> encodedShip = InputService.createEncodedShipFromInput(fleet.getFleet().get(0));
-            ShipService.addEncodedShipToMatrix(encodedShip, matrixAlly);
-
-            fleet.removeFirstShipTypeFromFleet();
+        while (!allyFleet.getFleet().isEmpty()) {
+            allySetFleetTurn();
         }
 
+        System.out.println(map.drawMaps(matrixAlly, matrixEnemy));
+
+        enemyFleet.addShipTypesToFleet();
+
+        while (!enemyFleet.getFleet().isEmpty()) {
+            enemySetFleetTurn();
+        }
+
+
+
     }
 
-    private String allyTurn() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
+    private void allySetFleetTurn() {
+        System.out.println(map.drawMaps(matrixAlly, matrixEnemy));
+        System.out.println("Set " + allyFleet.getFleet().get(0).toString().toLowerCase(Locale.ROOT) + ".");
+        List<String> encodedShip = InputService.createEncodedShipFromInput(allyFleet.getFleet().get(0));
+        ShipService.addEncodedShipToMatrix(encodedShip, matrixAlly);
+        allyFleet.removeFirstShipTypeFromFleet();
     }
 
+    private void enemySetFleetTurn() {
+
+    }
 }
