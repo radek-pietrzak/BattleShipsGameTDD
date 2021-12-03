@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DrawServiceTest {
 
     @RepeatedTest(10)
-    void shouldReturnProperlyEncodedShipAfterDraw(){
+    void shouldReturnProperlyEncodedCarrierAfterDraw(){
 
         //given
         //when
@@ -23,6 +23,71 @@ class DrawServiceTest {
         assertFalse(result.isEmpty());
         assertThat(result, hasSize(5));
         assertThat(result.toString(), containsString("C"));
+        assertThat(DrawService.getAllPossiblePositions(), hasSize(120));
+
+        System.out.println(result);
+    }
+
+    @RepeatedTest(10)
+    void shouldReturnProperlyEncodedBattleshipAfterDraw(){
+
+        //given
+        //when
+        List<String> result = DrawService.drawShipPlacement(Ship.BATTLESHIP);
+
+        //then
+        assertFalse(result.isEmpty());
+        assertThat(result, hasSize(4));
+        assertThat(result.toString(), containsString("B"));
+        assertThat(DrawService.getAllPossiblePositions(), hasSize(140));
+
+        System.out.println(result);
+    }
+
+    @RepeatedTest(10)
+    void shouldReturnProperlyEncodedDestroyerAfterDraw(){
+
+        //given
+        //when
+        List<String> result = DrawService.drawShipPlacement(Ship.DESTROYER);
+
+        //then
+        assertFalse(result.isEmpty());
+        assertThat(result, hasSize(3));
+        assertThat(result.toString(), containsString("D"));
+        assertThat(DrawService.getAllPossiblePositions(), hasSize(160));
+
+        System.out.println(result);
+    }
+
+    @RepeatedTest(10)
+    void shouldReturnProperlyEncodedSubmarineAfterDraw(){
+
+        //given
+        //when
+        List<String> result = DrawService.drawShipPlacement(Ship.SUBMARINE);
+
+        //then
+        assertFalse(result.isEmpty());
+        assertThat(result, hasSize(3));
+        assertThat(result.toString(), containsString("S"));
+        assertThat(DrawService.getAllPossiblePositions(), hasSize(160));
+
+        System.out.println(result);
+    }
+
+    @RepeatedTest(10)
+    void shouldReturnProperlyEncodedPatrolBoatAfterDraw(){
+
+        //given
+        //when
+        List<String> result = DrawService.drawShipPlacement(Ship.PATROL_BOAT);
+
+        //then
+        assertFalse(result.isEmpty());
+        assertThat(result, hasSize(2));
+        assertThat(result.toString(), containsString("P"));
+        assertThat(DrawService.getAllPossiblePositions(), hasSize(180));
 
         System.out.println(result);
     }

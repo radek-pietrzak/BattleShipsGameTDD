@@ -3,72 +3,46 @@ package org.ships.service;
 import org.ships.Ship;
 import org.ships.Vector;
 
-import java.util.List;
-import java.util.OptionalInt;
-import java.util.Random;
+import java.util.*;
 
 public class DrawService {
 
-    public static List<String> drawShipPlacement(Ship ship) {
+    private static final List<List<String>> allPossiblePositions = new ArrayList<>();
 
-        String coordinates = drawCoordinates(ship);
-        Vector vector = drawVector();
-
-        return FleetService.encodeShipWithCoordinatesAndVector(ship, vector, coordinates);
+    public static List<List<String>> getAllPossiblePositions() {
+        return allPossiblePositions;
     }
 
-    private static String drawCoordinates(Ship ship) {
+    public static List<String> drawShipPlacement(Ship ship) {
+
+        allPossiblePositions.clear();
+        createListOfAllPossiblePositions(ship);
+        Random random = new Random();
+        int drawnIndex = random.nextInt(allPossiblePositions.size());
+
+        return allPossiblePositions.get(drawnIndex);
+    }
+
+    private static void createListOfAllPossiblePositions(Ship ship) {
 
         int shipLength = FleetService.getShipLength(ship);
 
-        int x = drawX(shipLength);
-        int y = drawY(shipLength);
+        for (int i = 0; i < 11 - shipLength; i++)
+            for (int j = 0; j < 10; j++)
+                allPossiblePositions.add(FleetService.encodeShipWithCoordinatesAndVector(
+                        ship,
+                        Vector.EAST,
+                        CoordinatesService.getCoordinatesFromXY(i, j)
+                ));
 
-        return CoordinatesService.getCoordinatesFromXY(x, y);
+        for (int i = 0; i < 11 - shipLength; i++)
+            for (int j = 0; j < 10; j++)
+                allPossiblePositions.add(FleetService.encodeShipWithCoordinatesAndVector(
+                        ship,
+                        Vector.SOUTH,
+                        CoordinatesService.getCoordinatesFromXY(j, i)
+                ));
+
     }
-
-    private static int drawX(int shipLength) {
-
-        Random random = new Random();
-
-        OptionalInt optional = random.ints(0, 11 - shipLength).findFirst();
-
-        if (optional.isPresent())
-            return optional.getAsInt();
-
-        return 0;
-    }
-
-
-    private static int drawY(int shipLength) {
-
-        Random random = new Random();
-
-        OptionalInt optional = random.ints(0, 11 - shipLength).findFirst();
-
-        if (optional.isPresent())
-            return optional.getAsInt();
-
-        return 0;
-    }
-
-    private static Vector drawVector() {
-
-        Random random = new Random();
-
-        OptionalInt optionalInt = random.ints(0, 2).findFirst();
-
-        if (optionalInt.isPresent()) {
-
-            if (optionalInt.getAsInt() == 0)
-                return Vector.SOUTH;
-
-            else
-                return Vector.EAST;
-        }
-
-        return null;
-    }
-
 
 }
