@@ -25,12 +25,17 @@ public class Map {
 
             sb.append("|  ");
             sb.append(i + 1);
+
             if (i < 9)
                 sb.append(" ");
 
             for (int k = 0; k < 10; k++) {
                 sb.append("|");
-                sb.append(matrixEnemy.getMatrix()[i][k]);
+
+                if (!matrixEnemy.getMatrix()[i][k].equals("X") && !matrixEnemy.getMatrix()[i][k].equals("."))
+                    sb.append(" ");
+                else
+                    sb.append(matrixEnemy.getMatrix()[i][k]);
             }
 
             sb.append("|\r\n");

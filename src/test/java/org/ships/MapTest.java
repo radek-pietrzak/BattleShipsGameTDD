@@ -11,7 +11,7 @@ class MapTest {
     private final Map map = new Map();
 
     @Test
-    void shouldDrawEmptyMaps() {
+    void shouldConstructEmptyMaps() {
 
         //given
         Matrix matrix = new Matrix();
@@ -35,7 +35,7 @@ class MapTest {
     }
 
     @Test
-    void shouldDrawMapsAccordingToMatrix() {
+    void shouldConstructMapsAccordingToMatrix() {
 
         //given
         Matrix matrixAlly = spy(Matrix.class);
@@ -75,4 +75,44 @@ class MapTest {
         assertEquals(result, map.constructMaps(matrixAlly, matrixEnemy));
     }
 
+    @Test
+    void shouldConstructProperlyEnemyMap() {
+
+        //given
+        Matrix matrixEnemy = spy(Matrix.class);
+        Matrix matrixAlly = new Matrix();
+
+        String result = """
+                   A|B|C|D|E|F|G|H|I|J|     A|B|C|D|E|F|G|H|I|J|\r
+                1 | | | | | | | | | | |  1 | | | | | |.| | | | |\r
+                2 | | | | | | | | | | |  2 | | | |X| |.| | | | |\r
+                3 | | | | | | | | | | |  3 | | | | | | | | | | |\r
+                4 | | | | | | | | | | |  4 | | | | | | | | | | |\r
+                5 | | | | | | | | | | |  5 | | | | | | | | | | |\r
+                6 | | | | | | | | | | |  6 | | | | |X| | | | | |\r
+                7 | | | | | | | | | | |  7 | | | | | | | | | | |\r
+                8 | | | | | | | | | | |  8 | | | | | | | | | | |\r
+                9 | | | | | | | | | | |  9 | | | | | | | | | | |\r
+                10| | | | | | | | | | |  10| |.| | | | | | | | |\r
+                """;
+
+        String[][] givenMatrix = {
+                {"!", "!", "!", "!", "!", ".", " ", " ", " ", " ",},
+                {"!", "P", "!", "X", "!", ".", " ", " ", " ", " ",},
+                {"!", "P", "!", "D", "!", " ", "!", "!", "!", "!",},
+                {"!", "!", "!", "D", "!", " ", "!", "S", "S", "S",},
+                {"!", "!", "!", "!", "!", "!", "!", "!", "!", "!",},
+                {"C", "C", "C", "C", "X", "!", " ", "!", "B", "!",},
+                {"!", "!", "!", "!", "!", "!", " ", "!", "B", "!",},
+                {" ", " ", "!", "!", "!", "!", "!", "!", "B", "!",},
+                {" ", " ", "!", "P", "!", "P", "P", "!", "B", "!",},
+                {" ", ".", "!", "P", "!", "!", "!", "!", "!", "!",}
+        };
+
+        given(matrixEnemy.getMatrix()).willReturn(givenMatrix);
+
+        //when
+        //then
+        assertEquals(result, map.constructMaps(matrixAlly, matrixEnemy));
+    }
 }
