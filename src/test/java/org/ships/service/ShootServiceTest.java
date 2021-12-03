@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.ships.Matrix;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -11,7 +12,6 @@ import static org.mockito.Mockito.spy;
 
 class ShootServiceTest {
 
-    private final ShootService shootService = new ShootService();
     private final Matrix matrix = new Matrix();
 
     @Test
@@ -32,19 +32,19 @@ class ShootServiceTest {
         };
 
         //when
-        shootService.shoot(matrix, "b2");
-        shootService.shoot(matrix, "b3");
+        ShootService.shoot(matrix, "b2");
+        ShootService.shoot(matrix, "b3");
 
-        shootService.shoot(matrix, "d2");
-        shootService.shoot(matrix, "d3");
-        shootService.shoot(matrix, "d4");
+        ShootService.shoot(matrix, "d2");
+        ShootService.shoot(matrix, "d3");
+        ShootService.shoot(matrix, "d4");
 
-        shootService.shoot(matrix, "h4");
-        shootService.shoot(matrix, "i4");
-        shootService.shoot(matrix, "j4");
+        ShootService.shoot(matrix, "h4");
+        ShootService.shoot(matrix, "i4");
+        ShootService.shoot(matrix, "j4");
 
-        shootService.shoot(matrix, "d9");
-        shootService.shoot(matrix, "d10");
+        ShootService.shoot(matrix, "d9");
+        ShootService.shoot(matrix, "d10");
 
         //then
         assertEquals(Arrays.deepToString(result), Arrays.deepToString(matrix.getMatrix()));
@@ -74,9 +74,9 @@ class ShootServiceTest {
 
         //when
         //then
-        assertEquals(result, shootService.shoot(matrix, "b1"));
-        assertEquals(result, shootService.shoot(matrix, "a10"));
-        assertEquals(result, shootService.shoot(matrix, "g5"));
+        assertEquals(result, ShootService.shoot(matrix, "b1"));
+        assertEquals(result, ShootService.shoot(matrix, "a10"));
+        assertEquals(result, ShootService.shoot(matrix, "g5"));
 
     }
 
@@ -104,11 +104,57 @@ class ShootServiceTest {
 
         //when
         //then
-        assertEquals(result, shootService.shoot(matrix, "b2"));
-        assertEquals(result, shootService.shoot(matrix, "d3"));
-        assertEquals(result, shootService.shoot(matrix, "i9"));
-        assertEquals(result, shootService.shoot(matrix, "j4"));
+        assertEquals(result, ShootService.shoot(matrix, "b2"));
+        assertEquals(result, ShootService.shoot(matrix, "d3"));
+        assertEquals(result, ShootService.shoot(matrix, "i9"));
+        assertEquals(result, ShootService.shoot(matrix, "j4"));
 
+    }
+
+    @Test
+    void shouldProperlyMarkInMatrixAfterShot() {
+
+        //given
+        Matrix matrix = new Matrix();
+
+        String[][] result = {
+                {".", ".", ".", "!", "!", " ", " ", " ", " ", " ",},
+                {".", "X", ".", "D", ".", " ", " ", " ", " ", " ",},
+                {".", "X", ".", "X", "!", " ", "!", "!", ".", "!",},
+                {".", ".", ".", "D", ".", " ", "!", "S", "S", "X",},
+                {"!", "!", "!", "!", "!", "!", "!", "!", ".", "!",},
+                {"C", "C", "C", "C", "C", "!", " ", "!", "B", "!",},
+                {"!", "!", "!", "!", "!", "!", " ", "!", "B", "!",},
+                {" ", " ", "!", "!", "!", "!", "!", ".", "B", ".",},
+                {" ", " ", "!", "P", "!", "P", "P", "!", "X", "!",},
+                {" ", " ", "!", "P", "!", "!", "!", ".", "!", ".",}
+        };
+
+        List<String> carrierEncoded = List.of("C.0,5", "C.1,5", "C.2,5", "C.3,5", "C.4,5");
+        List<String> battleshipEncoded = List.of("B.8,8", "B.8,7", "B.8,6", "B.8,5");
+        List<String> submarineEncoded = List.of("S.7,3", "S.8,3", "S.9,3");
+        List<String> destroyerEncoded = List.of("D.3,1", "D.3,2", "D.3,3");
+        List<String> patrolBoat1Encoded = List.of("P.1,1", "P.1,2");
+        List<String> patrolBoat2Encoded = List.of("P.3,8", "P.3,9");
+        List<String> patrolBoat3Encoded = List.of("P.6,8", "P.5,8");
+
+        FleetService.addEncodedShipToMatrix(carrierEncoded, matrix);
+        FleetService.addEncodedShipToMatrix(battleshipEncoded, matrix);
+        FleetService.addEncodedShipToMatrix(submarineEncoded, matrix);
+        FleetService.addEncodedShipToMatrix(destroyerEncoded, matrix);
+        FleetService.addEncodedShipToMatrix(patrolBoat1Encoded, matrix);
+        FleetService.addEncodedShipToMatrix(patrolBoat2Encoded, matrix);
+        FleetService.addEncodedShipToMatrix(patrolBoat3Encoded, matrix);
+
+        //when
+        ShootService.shoot(matrix, "b2");
+        ShootService.shoot(matrix, "b3");
+        ShootService.shoot(matrix, "d3");
+        ShootService.shoot(matrix, "i9");
+        ShootService.shoot(matrix, "j4");
+
+        //then
+        assertEquals(Arrays.deepToString(result), Arrays.deepToString(matrix.getMatrix()));
 
     }
 

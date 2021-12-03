@@ -20,7 +20,9 @@ public class Matrix {
     }
 
     public void addToMatrix(int x, int y, String symbol) {
-        matrix[y][x] = symbol;
+
+        if (x >= 0 && x < 10 && y >= 0 && y < 10)
+            matrix[y][x] = symbol;
     }
 
 }
