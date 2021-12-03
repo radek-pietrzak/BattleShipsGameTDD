@@ -11,7 +11,7 @@ public class Fleet {
         return fleet;
     }
 
-    public void addShipTypesToFleet() {
+    public void addShipsToFleet() {
         fleet.add(Ship.CARRIER);
         fleet.add(Ship.BATTLESHIP);
         fleet.add(Ship.DESTROYER);
@@ -21,7 +21,7 @@ public class Fleet {
         fleet.add(Ship.PATROL_BOAT);
     }
 
-    public void removeFirstShipTypeFromFleet() {
+    public void removeFirstShipsFromFleet() {
         fleet.remove(0);
     }
 }

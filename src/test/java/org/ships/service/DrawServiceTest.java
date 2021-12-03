@@ -1,7 +1,6 @@
 package org.ships.service;
 
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
 import org.ships.Ship;
 
 import java.util.List;
@@ -17,7 +16,7 @@ class DrawServiceTest {
 
         //given
         //when
-        List<String> result = DrawService.drawShipPlacement(Ship.CARRIER);
+        List<String> result = DrawService.drawEncodedShip(Ship.CARRIER);
 
         //then
         assertFalse(result.isEmpty());
@@ -33,7 +32,7 @@ class DrawServiceTest {
 
         //given
         //when
-        List<String> result = DrawService.drawShipPlacement(Ship.BATTLESHIP);
+        List<String> result = DrawService.drawEncodedShip(Ship.BATTLESHIP);
 
         //then
         assertFalse(result.isEmpty());
@@ -49,7 +48,7 @@ class DrawServiceTest {
 
         //given
         //when
-        List<String> result = DrawService.drawShipPlacement(Ship.DESTROYER);
+        List<String> result = DrawService.drawEncodedShip(Ship.DESTROYER);
 
         //then
         assertFalse(result.isEmpty());
@@ -65,7 +64,7 @@ class DrawServiceTest {
 
         //given
         //when
-        List<String> result = DrawService.drawShipPlacement(Ship.SUBMARINE);
+        List<String> result = DrawService.drawEncodedShip(Ship.SUBMARINE);
 
         //then
         assertFalse(result.isEmpty());
@@ -81,7 +80,7 @@ class DrawServiceTest {
 
         //given
         //when
-        List<String> result = DrawService.drawShipPlacement(Ship.PATROL_BOAT);
+        List<String> result = DrawService.drawEncodedShip(Ship.PATROL_BOAT);
 
         //then
         assertFalse(result.isEmpty());

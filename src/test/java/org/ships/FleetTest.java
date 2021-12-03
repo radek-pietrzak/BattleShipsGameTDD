@@ -17,7 +17,7 @@ class FleetTest {
     void shouldAddAllShipTypesToFleet() {
 
         //when
-        fleet.addShipTypesToFleet();
+        fleet.addShipsToFleet();
 
         //then
         assertThat(fleet.getFleet(), hasSize(7));
@@ -44,8 +44,8 @@ class FleetTest {
         );
 
         //when
-        fleet.addShipTypesToFleet();
-        fleet.removeFirstShipTypeFromFleet();
+        fleet.addShipsToFleet();
+        fleet.removeFirstShipsFromFleet();
 
         //then
         assertEquals(expectedFleet, fleet.getFleet());
@@ -59,9 +59,9 @@ class FleetTest {
         List<Ship> expectedFleet = Collections.emptyList();
 
         //when
-        fleet.addShipTypesToFleet();
+        fleet.addShipsToFleet();
         for (int i = 0; i < 7; i++)
-            fleet.removeFirstShipTypeFromFleet();
+            fleet.removeFirstShipsFromFleet();
 
         //then
         assertEquals(expectedFleet, fleet.getFleet());
