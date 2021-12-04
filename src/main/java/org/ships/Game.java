@@ -3,6 +3,7 @@ package org.ships;
 import org.ships.service.DrawService;
 import org.ships.service.InputService;
 import org.ships.service.FleetService;
+import org.ships.service.ShootService;
 
 import java.util.*;
 
@@ -24,7 +25,13 @@ public class Game {
         enemySetFleet();
 
         System.out.println(map.constructMaps(matrixAlly, matrixEnemy));
+
+        for (int i = 0; i < 100; i++) {
+            startAllyTurn();
+            System.out.println(map.constructMaps(matrixAlly, matrixEnemy));
+        }
     }
+
 
     private void chooseManualOrAutoSetFleet() {
         boolean autoSetGoodAnswer = false;
@@ -51,17 +58,17 @@ public class Game {
 
     private void allySetFleetManual() {
 
-        while (!allyFleet.getFleet().isEmpty()) {
+        while (!allyFleet.getFleetToSet().isEmpty()) {
 
             System.out.println(map.constructMaps(matrixAlly, matrixEnemy));
-            System.out.println("Set " + allyFleet.getFleet().get(0).toString().toLowerCase(Locale.ROOT) + ".");
-            List<String> encodedShip = InputService.createEncodedShipFromInput(allyFleet.getFleet().get(0));
+            System.out.println("Set " + allyFleet.getFleetToSet().get(0).toString().toLowerCase(Locale.ROOT) + ".");
+            List<String> encodedShip = InputService.createEncodedShipFromInput(allyFleet.getFleetToSet().get(0));
 
             String setShipResult = FleetService.addEncodedShipToMatrix(encodedShip, matrixAlly);
 
             if (!setShipResult.contains("ERROR")) {
                 System.out.println(setShipResult);
-                allyFleet.removeFirstShipsFromFleet();
+                allyFleet.removeFirstShipFromFleet();
             } else
                 System.out.println(setShipResult.replace("ERROR", ""));
         }
@@ -71,25 +78,31 @@ public class Game {
 
     private void allySetFleetAuto() {
 
-        while (!allyFleet.getFleet().isEmpty()) {
+        while (!allyFleet.getFleetToSet().isEmpty()) {
 
-            List<String> encodedShip = DrawService.drawEncodedShip(allyFleet.getFleet().get(0));
+            List<String> encodedShip = DrawService.drawEncodedShip(allyFleet.getFleetToSet().get(0));
             String setShipResult = FleetService.addEncodedShipToMatrix(encodedShip, matrixAlly);
 
             if (!setShipResult.contains("ERROR"))
-                allyFleet.removeFirstShipsFromFleet();
+                allyFleet.removeFirstShipFromFleet();
         }
     }
 
     private void enemySetFleet() {
 
-        while (!enemyFleet.getFleet().isEmpty()) {
+        while (!enemyFleet.getFleetToSet().isEmpty()) {
 
-            List<String> encodedShip = DrawService.drawEncodedShip(enemyFleet.getFleet().get(0));
+            List<String> encodedShip = DrawService.drawEncodedShip(enemyFleet.getFleetToSet().get(0));
             String setShipResult = FleetService.addEncodedShipToMatrix(encodedShip, matrixEnemy);
 
             if (!setShipResult.contains("ERROR"))
-                enemyFleet.removeFirstShipsFromFleet();
+                enemyFleet.removeFirstShipFromFleet();
         }
+    }
+
+    private void startAllyTurn() {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        System.out.println(ShootService.shoot(matrixEnemy, input));
     }
 }

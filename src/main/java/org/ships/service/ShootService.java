@@ -21,7 +21,8 @@ public class ShootService {
             return "Hit!!";
         }
 
-        matrix.addToMatrix(x, y, ".");
+        if (!isHitInCoordinates(x, y, matrix))
+            matrix.addToMatrix(x, y, ".");
 
         return "Missed.";
     }

@@ -5,23 +5,23 @@ import java.util.List;
 
 public class Fleet {
 
-    List<Ship> fleet = new LinkedList<>();
+    List<Ship> fleetToSet = new LinkedList<>();
 
-    public List<Ship> getFleet() {
-        return fleet;
+    public List<Ship> getFleetToSet() {
+        return fleetToSet;
     }
 
     public void addShipsToFleet() {
-        fleet.add(Ship.CARRIER);
-        fleet.add(Ship.BATTLESHIP);
-        fleet.add(Ship.DESTROYER);
-        fleet.add(Ship.SUBMARINE);
-        fleet.add(Ship.PATROL_BOAT);
-        fleet.add(Ship.PATROL_BOAT);
-        fleet.add(Ship.PATROL_BOAT);
+        fleetToSet.add(Ship.CARRIER);
+        fleetToSet.add(Ship.BATTLESHIP);
+        fleetToSet.add(Ship.DESTROYER);
+        fleetToSet.add(Ship.SUBMARINE);
+        fleetToSet.add(Ship.PATROL_BOAT);
+        fleetToSet.add(Ship.PATROL_BOAT);
+        fleetToSet.add(Ship.PATROL_BOAT);
     }
 
-    public void removeFirstShipsFromFleet() {
-        fleet.remove(0);
+    public void removeFirstShipFromFleet() {
+        fleetToSet.remove(0);
     }
 }
