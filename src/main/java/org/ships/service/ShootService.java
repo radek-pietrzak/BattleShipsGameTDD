@@ -35,91 +35,121 @@ public class ShootService {
         if (isShipSunk(x, y, matrix)) {
             addEmptyCoordinatesAfterSunk(x, y, matrix);
         }
+
+
     }
 
     private static void addEmptyCoordinatesAfterSunk(int x, int y, Matrix matrix) {
 
-        List<Integer> initialCoordinatesOfHitsAround = getCoordinatesOfHitsAround(x, y, matrix);
+        List<List<Integer>> allHitList = getAllHitsAfterSunk(x, y, matrix);
 
-        List<Integer> coordinatesOfHitsAround = initialCoordinatesOfHitsAround;
-
-        int lastCheckedX = x;
-        int lastCheckedY = y;
-        int checkedX = x;
-        int checkedY = y;
-
-        while (coordinatesOfHitsAround.size() == 4) {
-            lastCheckedX = checkedX;
-            lastCheckedY = checkedY;
-            checkedX = coordinatesOfHitsAround.get(0);
-            checkedY = coordinatesOfHitsAround.get(1);
-            coordinatesOfHitsAround = getCoordinatesOfHitsAround(checkedX, checkedY, matrix);
-        }
-
-        if (coordinatesOfHitsAround.size() == 2) {
-            checkedX = coordinatesOfHitsAround.get(0);
-            checkedY = coordinatesOfHitsAround.get(1);
-        }
-
-        matrix.addToMatrix(checkedX + checkedX - lastCheckedX, checkedY + checkedY - lastCheckedY, ".");
-
-        coordinatesOfHitsAround = initialCoordinatesOfHitsAround;
-
-        lastCheckedX = x;
-        lastCheckedY = y;
-        checkedX = x;
-        checkedY = y;
-
-        while (coordinatesOfHitsAround.size() == 4) {
-            lastCheckedX = checkedX;
-            lastCheckedY = checkedY;
-            checkedX = coordinatesOfHitsAround.get(2);
-            checkedY = coordinatesOfHitsAround.get(3);
-            coordinatesOfHitsAround = getCoordinatesOfHitsAround(checkedX, checkedY, matrix);
-        }
-
-        if (coordinatesOfHitsAround.size() == 2) {
-            checkedX = coordinatesOfHitsAround.get(0);
-            checkedY = coordinatesOfHitsAround.get(1);
-        }
-
-        matrix.addToMatrix(checkedX + checkedX - lastCheckedX, checkedY + checkedY - lastCheckedY, ".");
+        allHitList.stream()
+                .distinct()
+                .forEach(list -> addEmptyCoordinatesAroundIfOffset(list.get(0), list.get(1), matrix));
 
     }
 
-    private static List<Integer> getCoordinatesOfHitsAround(int x, int y, Matrix matrix) {
-        List<Integer> result = new ArrayList<>();
+    private static void addEmptyCoordinatesAroundIfOffset(Integer x, Integer y, Matrix matrix) {
 
-        if (isHitInCoordinates(x + 1, y, matrix)) {
-            result.add(x + 1);
-            result.add(y);
+        if (x + 1 < 10)
+            if (matrix.getMatrix()[y][x + 1].equals("!"))
+                matrix.addToMatrix(x + 1, y, ".");
+
+        if (x - 1 >= 0)
+            if (matrix.getMatrix()[y][x - 1].equals("!"))
+                matrix.addToMatrix(x - 1, y, ".");
+
+        if (y + 1 < 10)
+            if (matrix.getMatrix()[y + 1][x].equals("!"))
+                matrix.addToMatrix(x, y + 1, ".");
+
+        if (y - 1 >= 0)
+            if (matrix.getMatrix()[y - 1][x].equals("!"))
+                matrix.addToMatrix(x, y - 1, ".");
+
+
+    }
+
+
+    private static List<List<Integer>> getAllHitsAfterSunk(int x, int y, Matrix matrix) {
+
+        List<List<Integer>> result;
+
+        result = getAllHitsAround(x, y, matrix);
+
+        int checkX = x + 1;
+
+        while (isHitInCoordinates(checkX, y, matrix)) {
+            result.addAll(getAllHitsAround(checkX, y, matrix));
+            checkX += 1;
         }
 
-        if (isHitInCoordinates(x - 1, y, matrix)) {
-            result.add(x - 1);
-            result.add(y);
+        checkX = x - 1;
+
+        while (isHitInCoordinates(checkX, y, matrix)) {
+            result.addAll(getAllHitsAround(checkX, y, matrix));
+            checkX -= 1;
         }
 
-        if (isHitInCoordinates(x, y + 1, matrix)) {
-            result.add(x);
-            result.add(y + 1);
+        int checkY = y + 1;
+
+        while (isHitInCoordinates(x, checkY, matrix)) {
+            result.addAll(getAllHitsAround(x, checkY, matrix));
+            checkY += 1;
         }
 
-        if (isHitInCoordinates(x, y - 1, matrix)) {
-            result.add(x);
-            result.add(y - 1);
+        checkY = y - 1;
+
+        while (isHitInCoordinates(x, checkY, matrix)) {
+            result.addAll(getAllHitsAround(x, checkY, matrix));
+            checkY -= 1;
         }
 
         return result;
     }
+
+    private static List<List<Integer>> getAllHitsAround(int x, int y, Matrix matrix) {
+
+        List<List<Integer>> result = new ArrayList<>();
+
+        if (isHitInCoordinates(x + 1, y, matrix)) {
+            List<Integer> hitCoordinates = new ArrayList<>();
+            hitCoordinates.add(x + 1);
+            hitCoordinates.add(y);
+            result.add(hitCoordinates);
+        }
+
+        if (isHitInCoordinates(x - 1, y, matrix)) {
+            List<Integer> hitCoordinates = new ArrayList<>();
+            hitCoordinates.add(x - 1);
+            hitCoordinates.add(y);
+            result.add(hitCoordinates);
+        }
+
+        if (isHitInCoordinates(x, y + 1, matrix)) {
+            List<Integer> hitCoordinates = new ArrayList<>();
+            hitCoordinates.add(x);
+            hitCoordinates.add(y + 1);
+            result.add(hitCoordinates);
+        }
+
+        if (isHitInCoordinates(x, y - 1, matrix)) {
+            List<Integer> hitCoordinates = new ArrayList<>();
+            hitCoordinates.add(x);
+            hitCoordinates.add(y - 1);
+            result.add(hitCoordinates);
+        }
+
+        return result;
+    }
+
 
     private static boolean isShipSunk(int x, int y, Matrix matrix) {
 
         if (isShipAround(x, y, matrix))
             return false;
 
-        int checkX = x;
-        checkX += 1;
+        int checkX = x + 1;
 
         while (isHitInCoordinates(checkX, y, matrix)) {
             if (isShipAround(checkX, y, matrix))
@@ -137,8 +167,7 @@ public class ShootService {
             checkX -= 1;
         }
 
-        int checkY = y;
-        checkY += 1;
+        int checkY = y + 1;
 
         while (isHitInCoordinates(x, checkY, matrix)) {
             if (isShipAround(x, checkY, matrix))
@@ -167,7 +196,10 @@ public class ShootService {
     }
 
     private static boolean isHitInCoordinates(int x, int y, Matrix matrix) {
-        return matrix.getMatrix()[y][x].equals("X");
+        if (x < 10 && x >= 0 && y < 10 && y >= 0)
+            return matrix.getMatrix()[y][x].equals("X");
+        else
+            return false;
     }
 
     private static boolean isShipInCoordinates(int x, int y, Matrix matrix) {
@@ -180,4 +212,5 @@ public class ShootService {
 
         return false;
     }
+
 }
