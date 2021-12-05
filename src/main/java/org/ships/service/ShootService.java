@@ -28,6 +28,22 @@ public class ShootService {
         return "Missed.";
     }
 
+    public static String shootComp(Matrix matrix, int x, int y) {
+
+        if (isShipInCoordinates(x, y, matrix)) {
+            String hitPart = FleetService.encodeShipFromCoordinates(x, y, matrix);
+            matrix.addToMatrix(x, y, "X");
+            addEmptyCoordinatesAfterHit(x, y, matrix);
+            return hitPart;
+        }
+
+        if (!isHitInCoordinates(x, y, matrix))
+            matrix.addToMatrix(x, y, ".");
+
+        return "Computer missed.";
+    }
+
+
     private static void addEmptyCoordinatesAfterHit(int x, int y, Matrix matrix) {
         matrix.addToMatrix(x - 1, y - 1, ".");
         matrix.addToMatrix(x + 1, y - 1, ".");

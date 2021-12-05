@@ -220,4 +220,64 @@ class ShootServiceTest {
 
     }
 
+    @Test
+    void shouldReturnCompMissed() {
+
+        //given
+        Matrix matrix = spy(Matrix.class);
+        String result = "Computer missed.";
+
+        String[][] givenMatrix = {
+                {"!", "!", "!", "!", "!", " ", " ", " ", " ", " ",},
+                {"!", "P", "!", "D", "!", " ", " ", " ", " ", " ",},
+                {"!", "P", "!", "D", "!", " ", "!", "!", "!", "!",},
+                {"!", "!", "!", "D", "!", " ", "!", "S", "S", "S",},
+                {"!", "!", "!", "!", "!", "!", "!", "!", "!", "!",},
+                {"C", "C", "C", "C", "C", "!", " ", "!", "B", "!",},
+                {"!", "!", "!", "!", "!", "!", " ", "!", "B", "!",},
+                {" ", " ", "!", "!", "!", "!", "!", "!", "B", "!",},
+                {" ", " ", "!", "P", "!", "P", "P", "!", "B", "!",},
+                {" ", " ", "!", "P", "!", "!", "!", "!", "!", "!",}
+        };
+
+        given(matrix.getMatrix()).willReturn(givenMatrix);
+
+        //when
+        //then
+        assertEquals(result, ShootService.shootComp(matrix, 0,0));
+        assertEquals(result, ShootService.shootComp(matrix, 0,9));
+        assertEquals(result, ShootService.shootComp(matrix, 6,4));
+
+    }
+
+    @Test
+    void shouldReturnCompHit() {
+
+        //given
+        Matrix matrix = spy(Matrix.class);
+        String result = "Computer missed.";
+
+        String[][] givenMatrix = {
+                {"!", "!", "!", "!", "!", " ", " ", " ", " ", " ",},
+                {"!", "P", "!", "D", "!", " ", " ", " ", " ", " ",},
+                {"!", "P", "!", "D", "!", " ", "!", "!", "!", "!",},
+                {"!", "!", "!", "D", "!", " ", "!", "S", "S", "S",},
+                {"!", "!", "!", "!", "!", "!", "!", "!", "!", "!",},
+                {"C", "C", "C", "C", "C", "!", " ", "!", "B", "!",},
+                {"!", "!", "!", "!", "!", "!", " ", "!", "B", "!",},
+                {" ", " ", "!", "!", "!", "!", "!", "!", "B", "!",},
+                {" ", " ", "!", "P", "!", "P", "P", "!", "B", "!",},
+                {" ", " ", "!", "P", "!", "!", "!", "!", "!", "!",}
+        };
+
+        given(matrix.getMatrix()).willReturn(givenMatrix);
+
+        //when
+        //then
+        assertEquals("P.1,1", ShootService.shootComp(matrix, 1,1));
+        assertEquals("D.3,2", ShootService.shootComp(matrix, 3,2));
+        assertEquals("B.8,5", ShootService.shootComp(matrix, 8,5));
+
+    }
+
 }
