@@ -2,16 +2,22 @@ package org.ships;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Fleet {
 
-    List<Ship> fleetToSet = new LinkedList<>();
+    private final List<Ship> fleetToSet = new LinkedList<>();
+    private List<List<String>> encodedFleet = new LinkedList<>();
 
     public List<Ship> getFleetToSet() {
         return fleetToSet;
     }
 
-    public void addShipsToFleet() {
+    public List<List<String>> getEncodedFleet() {
+        return encodedFleet;
+    }
+
+    public void addShipsToFleetToSet() {
         fleetToSet.add(Ship.CARRIER);
         fleetToSet.add(Ship.BATTLESHIP);
         fleetToSet.add(Ship.DESTROYER);
@@ -21,7 +27,17 @@ public class Fleet {
         fleetToSet.add(Ship.PATROL_BOAT);
     }
 
-    public void removeFirstShipFromFleet() {
+    public void addShipsToEncodedFleet(List<String> encodedShip) {
+        encodedFleet.add(encodedShip);
+    }
+
+    public void removeShipFromListAfterHit(String shot) {
+
+        encodedFleet.forEach(ship -> ship.removeIf(s -> s.contains(shot)));
+        encodedFleet.removeIf(List::isEmpty);
+    }
+
+    public void removeFirstShipFromFleetToSet() {
         fleetToSet.remove(0);
     }
 }

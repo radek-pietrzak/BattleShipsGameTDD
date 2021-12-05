@@ -16,7 +16,7 @@ class DrawServiceTest {
 
         //given
         //when
-        List<String> result = DrawService.drawEncodedShip(Ship.CARRIER);
+        List<String> result = DrawService.drawPositionOfShip(Ship.CARRIER);
 
         //then
         assertFalse(result.isEmpty());
@@ -32,7 +32,7 @@ class DrawServiceTest {
 
         //given
         //when
-        List<String> result = DrawService.drawEncodedShip(Ship.BATTLESHIP);
+        List<String> result = DrawService.drawPositionOfShip(Ship.BATTLESHIP);
 
         //then
         assertFalse(result.isEmpty());
@@ -48,7 +48,7 @@ class DrawServiceTest {
 
         //given
         //when
-        List<String> result = DrawService.drawEncodedShip(Ship.DESTROYER);
+        List<String> result = DrawService.drawPositionOfShip(Ship.DESTROYER);
 
         //then
         assertFalse(result.isEmpty());
@@ -64,7 +64,7 @@ class DrawServiceTest {
 
         //given
         //when
-        List<String> result = DrawService.drawEncodedShip(Ship.SUBMARINE);
+        List<String> result = DrawService.drawPositionOfShip(Ship.SUBMARINE);
 
         //then
         assertFalse(result.isEmpty());
@@ -80,7 +80,7 @@ class DrawServiceTest {
 
         //given
         //when
-        List<String> result = DrawService.drawEncodedShip(Ship.PATROL_BOAT);
+        List<String> result = DrawService.drawPositionOfShip(Ship.PATROL_BOAT);
 
         //then
         assertFalse(result.isEmpty());

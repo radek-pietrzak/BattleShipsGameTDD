@@ -85,7 +85,6 @@ class ShootServiceTest {
 
         //given
         Matrix matrix = spy(Matrix.class);
-        String result = "Hit!!";
 
         String[][] givenMatrix = {
                 {"!", "!", "!", "!", "!", " ", " ", " ", " ", " ",},
@@ -104,10 +103,10 @@ class ShootServiceTest {
 
         //when
         //then
-        assertEquals(result, ShootService.shoot(matrix, "b2"));
-        assertEquals(result, ShootService.shoot(matrix, "d3"));
-        assertEquals(result, ShootService.shoot(matrix, "i9"));
-        assertEquals(result, ShootService.shoot(matrix, "j4"));
+        assertEquals("P.1,1", ShootService.shoot(matrix, "b2"));
+        assertEquals("D.3,2", ShootService.shoot(matrix, "d3"));
+        assertEquals("B.8,8", ShootService.shoot(matrix, "i9"));
+        assertEquals("S.9,3", ShootService.shoot(matrix, "j4"));
 
     }
 

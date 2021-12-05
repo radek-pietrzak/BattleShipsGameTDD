@@ -16,9 +16,10 @@ public class ShootService {
         int y = CoordinatesService.getYFromCoordinates(coordinates);
 
         if (isShipInCoordinates(x, y, matrix)) {
+            String hitPart = FleetService.encodeShipFromCoordinates(x, y, matrix);
             matrix.addToMatrix(x, y, "X");
             addEmptyCoordinatesAfterHit(x, y, matrix);
-            return "Hit!!";
+            return hitPart;
         }
 
         if (!isHitInCoordinates(x, y, matrix))

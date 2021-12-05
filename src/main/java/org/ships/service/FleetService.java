@@ -61,7 +61,7 @@ public class FleetService {
         return result;
     }
 
-    public static String addEncodedShipToMatrix(List<String > encodedShip, Matrix matrix) {
+    public static String addEncodedShipToMatrix(List<String> encodedShip, Matrix matrix) {
 
         if (shipIsNotInBounds(encodedShip))
             return "Ship out of bounds.ERROR";
@@ -91,7 +91,7 @@ public class FleetService {
     public static int getShipLength(Ship ship) {
         int shipLength;
 
-        switch (ship){
+        switch (ship) {
             case CARRIER -> shipLength = 5;
             case BATTLESHIP -> shipLength = 4;
             case DESTROYER, SUBMARINE -> shipLength = 3;
@@ -101,6 +101,10 @@ public class FleetService {
         return shipLength;
     }
 
+    public static String encodeShipFromCoordinates(int x, int y, Matrix matrix) {
+
+        return matrix.getMatrix()[y][x] + "." + x + "," + y;
+    }
 
     private static boolean shipIsNotInBounds(List<String> encodedShip) {
 

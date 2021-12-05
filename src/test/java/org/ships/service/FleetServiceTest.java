@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.spy;
@@ -195,13 +197,13 @@ class FleetServiceTest {
     void shouldEncodeShipWithCoordinatesAndVectorProperly() {
 
         //given
-        List<String> carrierEncoded = List.of("C.0,5","C.1,5","C.2,5","C.3,5","C.4,5");
-        List<String> battleshipEncoded = List.of("B.8,8","B.8,7","B.8,6","B.8,5");
-        List<String> submarineEncoded = List.of("S.9,3","S.8,3","S.7,3");
-        List<String> destroyerEncoded = List.of("D.3,1","D.3,2","D.3,3");
-        List<String> patrolBoat1Encoded = List.of("P.1,1","P.1,2");
-        List<String> patrolBoat2Encoded = List.of("P.3,9","P.3,8");
-        List<String> patrolBoat3Encoded = List.of("P.5,8","P.6,8");
+        List<String> carrierEncoded = List.of("C.0,5", "C.1,5", "C.2,5", "C.3,5", "C.4,5");
+        List<String> battleshipEncoded = List.of("B.8,8", "B.8,7", "B.8,6", "B.8,5");
+        List<String> submarineEncoded = List.of("S.9,3", "S.8,3", "S.7,3");
+        List<String> destroyerEncoded = List.of("D.3,1", "D.3,2", "D.3,3");
+        List<String> patrolBoat1Encoded = List.of("P.1,1", "P.1,2");
+        List<String> patrolBoat2Encoded = List.of("P.3,9", "P.3,8");
+        List<String> patrolBoat3Encoded = List.of("P.5,8", "P.6,8");
 
         //when
         //then
@@ -209,9 +211,21 @@ class FleetServiceTest {
         assertEquals(battleshipEncoded, FleetService.encodeShipWithCoordinatesAndVector(Ship.BATTLESHIP, Vector.NORTH, "i9"));
         assertEquals(submarineEncoded, FleetService.encodeShipWithCoordinatesAndVector(Ship.SUBMARINE, Vector.WEST, "j4"));
         assertEquals(destroyerEncoded, FleetService.encodeShipWithCoordinatesAndVector(Ship.DESTROYER, Vector.SOUTH, "d2"));
-        assertEquals(patrolBoat1Encoded, FleetService.encodeShipWithCoordinatesAndVector(Ship.PATROL_BOAT, Vector.SOUTH,"b2"));
-        assertEquals(patrolBoat2Encoded, FleetService.encodeShipWithCoordinatesAndVector(Ship.PATROL_BOAT,Vector.NORTH, "d10"));
-        assertEquals(patrolBoat3Encoded, FleetService.encodeShipWithCoordinatesAndVector(Ship.PATROL_BOAT, Vector.EAST,"f9"));
+        assertEquals(patrolBoat1Encoded, FleetService.encodeShipWithCoordinatesAndVector(Ship.PATROL_BOAT, Vector.SOUTH, "b2"));
+        assertEquals(patrolBoat2Encoded, FleetService.encodeShipWithCoordinatesAndVector(Ship.PATROL_BOAT, Vector.NORTH, "d10"));
+        assertEquals(patrolBoat3Encoded, FleetService.encodeShipWithCoordinatesAndVector(Ship.PATROL_BOAT, Vector.EAST, "f9"));
+    }
+
+    @Test
+    void shouldEncodeShipFromCoordinates() {
+
+        //given
+        int x = 1;
+        int y = 9;
+        matrix.addToMatrix(1, 9, "C");
+
+        //when
+        assertThat("C.1,9", equalTo(FleetService.encodeShipFromCoordinates(x, y, matrix)));
     }
 
 }

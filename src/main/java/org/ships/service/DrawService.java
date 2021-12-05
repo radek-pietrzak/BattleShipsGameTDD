@@ -13,7 +13,7 @@ public class DrawService {
         return allPossiblePositions;
     }
 
-    public static List<String> drawEncodedShip(Ship ship) {
+    public static List<String> drawPositionOfShip(Ship ship) {
 
         allPossiblePositions.clear();
         createListOfAllPossiblePositions(ship);
