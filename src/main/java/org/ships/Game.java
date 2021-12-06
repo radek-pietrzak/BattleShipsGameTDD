@@ -14,7 +14,25 @@ public class Game {
     private final Fleet allyFleet = new Fleet();
     private final Fleet enemyFleet = new Fleet();
     private final Computer computer = new Computer();
-    private boolean compVsComp = false;
+    private boolean compVsComp = true;
+    private boolean autoSetAllyFleet = false;
+
+
+    public Fleet getAllyFleet() {
+        return allyFleet;
+    }
+
+    public Fleet getEnemyFleet() {
+        return enemyFleet;
+    }
+
+    public void setCompVsComp(boolean compVsComp) {
+        this.compVsComp = compVsComp;
+    }
+
+    public void setAutoSetAllyFleet(boolean autoSetAllyFleet) {
+        this.autoSetAllyFleet = autoSetAllyFleet;
+    }
 
     public void startGame() {
 
@@ -22,6 +40,11 @@ public class Game {
         enemyFleet.addShipsToFleetToSet();
 
         chooseManualOrAutoSetFleet();
+
+        if (autoSetAllyFleet)
+            allySetFleetAuto();
+        else
+            allySetFleetManual();
 
         enemySetFleet();
 
@@ -56,9 +79,8 @@ public class Game {
         }
     }
 
-    private void chooseManualOrAutoSetFleet() {
+    void chooseManualOrAutoSetFleet() {
         boolean autoSetGoodAnswer = false;
-        boolean autoSetAnswer = false;
 
         while (!autoSetGoodAnswer) {
 
@@ -68,15 +90,11 @@ public class Game {
 
             if (setAnswer.equals("auto")) {
                 autoSetGoodAnswer = true;
-                autoSetAnswer = true;
+                autoSetAllyFleet = true;
             } else if (setAnswer.equals("manual"))
                 autoSetGoodAnswer = true;
         }
 
-        if (autoSetAnswer)
-            allySetFleetAuto();
-        else
-            allySetFleetManual();
     }
 
     private void allySetFleetManual() {
@@ -129,7 +147,7 @@ public class Game {
         }
     }
 
-    private void humanOrComputer() {
+    void humanOrComputer() {
         System.out.println("Human vs Computer \"human\" or Computer vs Computer \"comp\"");
 
         Scanner scanner = new Scanner(System.in);
