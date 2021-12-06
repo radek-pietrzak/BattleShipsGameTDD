@@ -134,7 +134,7 @@ public class FleetService {
             int x = Integer.parseInt(c.substring(dot + 1, comma));
             int y = Integer.parseInt(c.substring(comma + 1));
 
-            if (areCoordinatesOccupied(matrix.getMatrix()[y][x]))
+            if (isShipInCoordinates(matrix.getMatrix()[y][x]))
                 result.set(true);
 
         });
@@ -163,41 +163,41 @@ public class FleetService {
     private static void addOffset(int x, int y, Matrix matrix) {
 
         if (x - 1 >= 0 && y - 1 >= 0)
-            if (!areCoordinatesOccupied(matrix.getMatrix()[y - 1][x - 1]))
+            if (!isShipInCoordinates(matrix.getMatrix()[y - 1][x - 1]))
                 matrix.getMatrix()[y - 1][x - 1] = "!";
 
         if (y - 1 >= 0)
-            if (!areCoordinatesOccupied(matrix.getMatrix()[y - 1][x]))
+            if (!isShipInCoordinates(matrix.getMatrix()[y - 1][x]))
                 matrix.getMatrix()[y - 1][x] = "!";
 
         if (x + 1 < 10 && y - 1 >= 0)
-            if (!areCoordinatesOccupied(matrix.getMatrix()[y - 1][x + 1]))
+            if (!isShipInCoordinates(matrix.getMatrix()[y - 1][x + 1]))
                 matrix.getMatrix()[y - 1][x + 1] = "!";
 
         if (x - 1 >= 0)
-            if (!areCoordinatesOccupied(matrix.getMatrix()[y][x - 1]))
+            if (!isShipInCoordinates(matrix.getMatrix()[y][x - 1]))
                 matrix.getMatrix()[y][x - 1] = "!";
 
         if (x + 1 < 10)
-            if (!areCoordinatesOccupied(matrix.getMatrix()[y][x + 1]))
+            if (!isShipInCoordinates(matrix.getMatrix()[y][x + 1]))
                 matrix.getMatrix()[y][x + 1] = "!";
 
         if (x - 1 >= 0 && y + 1 < 10)
-            if (!areCoordinatesOccupied(matrix.getMatrix()[y + 1][x - 1]))
+            if (!isShipInCoordinates(matrix.getMatrix()[y + 1][x - 1]))
                 matrix.getMatrix()[y + 1][x - 1] = "!";
 
         if (y + 1 < 10)
-            if (!areCoordinatesOccupied(matrix.getMatrix()[y + 1][x]))
+            if (!isShipInCoordinates(matrix.getMatrix()[y + 1][x]))
                 matrix.getMatrix()[y + 1][x] = "!";
 
         if (x + 1 < 10 && y + 1 < 10)
-            if (!areCoordinatesOccupied(matrix.getMatrix()[y + 1][x + 1]))
+            if (!isShipInCoordinates(matrix.getMatrix()[y + 1][x + 1]))
                 matrix.getMatrix()[y + 1][x + 1] = "!";
 
     }
 
-    private static boolean areCoordinatesOccupied(String m) {
-        return m.equals("C") || m.equals("B") || m.equals("D") || m.equals("S") || m.equals("P");
+    private static boolean isShipInCoordinates(String symbol) {
+        return symbol.equals("C") || symbol.equals("B") || symbol.equals("D") || symbol.equals("S") || symbol.equals("P");
     }
 
 }
