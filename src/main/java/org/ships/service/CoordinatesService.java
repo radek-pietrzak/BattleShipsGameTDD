@@ -91,7 +91,6 @@ public class CoordinatesService {
             case 9 -> result.append('j');
             default -> throw new IllegalStateException("Unexpected value: " + x);
         }
-        ;
 
         result.append(y + 1);
 

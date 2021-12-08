@@ -16,6 +16,8 @@ public class Game {
     private final Computer computer = new Computer();
     private boolean compVsComp = true;
     private boolean autoSetAllyFleet = false;
+    private Algorithm enemyAlgorithm;
+    private Algorithm allyAlgorithm;
 
 
     public Fleet getAllyFleet() {
@@ -34,12 +36,22 @@ public class Game {
         this.autoSetAllyFleet = autoSetAllyFleet;
     }
 
+    public void setEnemyAlgorithm(Algorithm enemyAlgorithm) {
+        this.enemyAlgorithm = enemyAlgorithm;
+    }
+
+    public void setAllyAlgorithm(Algorithm allyAlgorithm) {
+        this.allyAlgorithm = allyAlgorithm;
+    }
+
     public void startGame() {
 
         allyFleet.addShipsToFleetToSet();
         enemyFleet.addShipsToFleetToSet();
 
         chooseManualOrAutoSetFleet();
+
+        chooseDifficulty();
 
         if (autoSetAllyFleet)
             allySetFleetAuto();
@@ -49,6 +61,10 @@ public class Game {
         enemySetFleet();
 
         humanOrComputer();
+
+        if (compVsComp) {
+            chooseAllyDifficulty();
+        }
 
         System.out.println(map.constructMaps(matrixAlly, matrixEnemy));
 
@@ -79,6 +95,26 @@ public class Game {
         }
     }
 
+    private void chooseAllyDifficulty() {
+        boolean validAnswer = false;
+
+        Scanner scanner = new Scanner(System.in);
+        String input;
+        while (!validAnswer) {
+
+            System.out.println("Choose ally difficulty: \"very easy\", \"easy\"");
+            input = scanner.nextLine();
+
+            if (input.equals("very easy")) {
+                validAnswer = true;
+                allyAlgorithm = Algorithm.TOTALLY_RANDOM;
+            } else if (input.equals("easy")) {
+                validAnswer = true;
+                allyAlgorithm = Algorithm.RANDOM_WITH_FINISHING;
+            }
+        }
+    }
+
     void chooseManualOrAutoSetFleet() {
         boolean autoSetGoodAnswer = false;
 
@@ -95,6 +131,30 @@ public class Game {
                 autoSetGoodAnswer = true;
         }
 
+    }
+
+    void chooseDifficulty() {
+
+        boolean badAnswer = true;
+
+        Scanner scanner = new Scanner(System.in);
+
+        while (badAnswer) {
+
+            System.out.println("Choose enemy difficulty: \"very easy\", \"easy\"");
+            String input = scanner.nextLine();
+
+            switch (input) {
+                case "very easy" -> {
+                    enemyAlgorithm = Algorithm.TOTALLY_RANDOM;
+                    badAnswer = false;
+                }
+                case "easy" -> {
+                    enemyAlgorithm = Algorithm.RANDOM_WITH_FINISHING;
+                    badAnswer = false;
+                }
+            }
+        }
     }
 
     private void allySetFleetManual() {
@@ -148,19 +208,31 @@ public class Game {
     }
 
     void humanOrComputer() {
-        System.out.println("Human vs Computer \"human\" or Computer vs Computer \"comp\"");
 
+        boolean validAnswer = false;
         Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
+        String input;
 
-        compVsComp = input.equals("comp");
+        while (!validAnswer) {
+            System.out.println("Human vs Computer \"human\" or Computer vs Computer \"comp\"");
+            input = scanner.nextLine();
+
+            if (input.equals("comp")) {
+                compVsComp = true;
+                validAnswer = true;
+            } else if (input.equals("human")) {
+                compVsComp = false;
+                validAnswer = true;
+            }
+
+        }
     }
 
     private void startCompAllyTurn() {
 
         Matrix.copyAllShots(matrixEnemy, computerAsHumanSeenMatrix);
 
-        int[] compShotChoice = computer.compShotChoice(computerAsHumanSeenMatrix);
+        int[] compShotChoice = computer.compShotChoice(computerAsHumanSeenMatrix, allyAlgorithm);
         int x = compShotChoice[0];
         int y = compShotChoice[1];
 
@@ -191,7 +263,7 @@ public class Game {
 
         Matrix.copyAllShots(matrixAlly, computerSeenMatrix);
 
-        int[] compShotChoice = computer.compShotChoice(computerSeenMatrix);
+        int[] compShotChoice = computer.compShotChoice(computerSeenMatrix, enemyAlgorithm);
         int x = compShotChoice[0];
         int y = compShotChoice[1];
 
