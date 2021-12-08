@@ -22,6 +22,7 @@ public class CompVsCompTest {
             willDoNothing().given(game).chooseManualOrAutoSetFleet();
             willDoNothing().given(game).humanOrComputer();
             willDoNothing().given(game).chooseDifficulty();
+            willDoNothing().given(game).chooseAllyDifficulty();
 
             game.setCompVsComp(true);
             game.setAutoSetAllyFleet(true);
@@ -56,6 +57,7 @@ public class CompVsCompTest {
             willDoNothing().given(game).chooseManualOrAutoSetFleet();
             willDoNothing().given(game).humanOrComputer();
             willDoNothing().given(game).chooseDifficulty();
+            willDoNothing().given(game).chooseAllyDifficulty();
 
             game.setCompVsComp(true);
             game.setAutoSetAllyFleet(true);
@@ -90,11 +92,12 @@ public class CompVsCompTest {
             willDoNothing().given(game).chooseManualOrAutoSetFleet();
             willDoNothing().given(game).humanOrComputer();
             willDoNothing().given(game).chooseDifficulty();
+            willDoNothing().given(game).chooseAllyDifficulty();
 
             game.setCompVsComp(true);
             game.setAutoSetAllyFleet(true);
-            game.setEnemyAlgorithm(Algorithm.RANDOM_WITH_FINISHING);
-            game.setAllyAlgorithm(Algorithm.TOTALLY_RANDOM);
+            game.setEnemyAlgorithm(Algorithm.TOTALLY_RANDOM);
+            game.setAllyAlgorithm(Algorithm.RANDOM_WITH_FINISHING);
 
             game.startGame();
 

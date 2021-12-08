@@ -95,7 +95,7 @@ public class Game {
         }
     }
 
-    private void chooseAllyDifficulty() {
+    void chooseAllyDifficulty() {
         boolean validAnswer = false;
 
         Scanner scanner = new Scanner(System.in);
