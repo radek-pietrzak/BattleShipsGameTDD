@@ -220,4 +220,39 @@ public class CompVsCompTest {
         System.out.println("Enemy wins: " + countEnemyWins);
 
     }
+
+    @Test
+    void checkAllPossiblePositionsVsFinishingEmptySurroundLvl1() {
+
+        int countAllyWins = 0;
+        int countEnemyWins = 0;
+
+        for (int i = 0; i < 1000; i++) {
+
+            Game game = spy(Game.class);
+
+            willDoNothing().given(game).chooseManualOrAutoSetFleet();
+            willDoNothing().given(game).humanOrComputer();
+            willDoNothing().given(game).chooseDifficulty();
+            willDoNothing().given(game).chooseAllyDifficulty();
+
+            game.setCompVsComp(true);
+            game.setAutoSetAllyFleet(true);
+            game.setEnemyAlgorithm(Algorithm.CHECK_ALL_POSSIBLE_POSITIONS);
+            game.setAllyAlgorithm(Algorithm.FINISHING_EMPTY_SURROUND_LVL1);
+
+            game.startGame();
+
+            if (game.getEnemyFleet().getEncodedFleet().isEmpty())
+                countAllyWins += 1;
+            if (game.getAllyFleet().getEncodedFleet().isEmpty())
+                countEnemyWins += 1;
+
+        }
+
+        //then
+        System.out.println("Ally wins: " + countAllyWins);
+        System.out.println("Enemy wins: " + countEnemyWins);
+
+    }
 }

@@ -225,7 +225,27 @@ class FleetServiceTest {
         matrix.addToMatrix(1, 9, "C");
 
         //when
+        //then
         assertThat("C.1,9", equalTo(FleetService.encodeShipFromCoordinates(x, y, matrix)));
+    }
+
+    @Test
+    void shouldDecodePositionToCoordinates() {
+
+        assertThat(new int[]{1, 9}, equalTo(FleetService.decodePositionToCoordinates("C.1,9")));
+        assertThat(new int[]{9, 9}, equalTo(FleetService.decodePositionToCoordinates("P.9,9")));
+        assertThat(new int[]{0, 7}, equalTo(FleetService.decodePositionToCoordinates("D.0,7")));
+    }
+
+    @Test
+    void shouldEncodeShipToCoordinatesProperly() {
+
+        assertThat(FleetService.encodeShipToCoordinates(Ship.CARRIER, 1, 1), equalTo("C.1,1"));
+        assertThat(FleetService.encodeShipToCoordinates(Ship.CARRIER, 23, 55), equalTo("C.23,55"));
+        assertThat(FleetService.encodeShipToCoordinates(Ship.BATTLESHIP, 4, 6), equalTo("B.4,6"));
+        assertThat(FleetService.encodeShipToCoordinates(Ship.SUBMARINE, 7, 9), equalTo("S.7,9"));
+        assertThat(FleetService.encodeShipToCoordinates(Ship.DESTROYER, 7, 9), equalTo("D.7,9"));
+        assertThat(FleetService.encodeShipToCoordinates(Ship.PATROL_BOAT, 7, 9), equalTo("P.7,9"));
     }
 
 }

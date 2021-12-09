@@ -102,7 +102,7 @@ public class Game {
         String input;
         while (!validAnswer) {
 
-            System.out.println("Choose ally difficulty: \"very easy\", \"easy\", \"medium\"");
+            System.out.println("Choose ally difficulty: \"very easy\", \"easy\", \"medium\", \"difficult\"");
             input = scanner.nextLine();
 
             switch (input) {
@@ -116,6 +116,10 @@ public class Game {
                 }
                 case "medium" -> {
                     allyAlgorithm = Algorithm.FINISHING_EMPTY_SURROUND_LVL1;
+                    validAnswer = true;
+                }
+                case "difficult" -> {
+                    allyAlgorithm = Algorithm.CHECK_ALL_POSSIBLE_POSITIONS;
                     validAnswer = true;
                 }
             }
@@ -149,7 +153,7 @@ public class Game {
 
         while (!validAnswer) {
 
-            System.out.println("Choose enemy difficulty: \"very easy\", \"easy\", \"medium\"");
+            System.out.println("Choose enemy difficulty: \"very easy\", \"easy\", \"medium\", \"difficult\"");
             String input = scanner.nextLine();
 
             switch (input) {
@@ -163,6 +167,10 @@ public class Game {
                 }
                 case "medium" -> {
                     enemyAlgorithm = Algorithm.FINISHING_EMPTY_SURROUND_LVL1;
+                    validAnswer = true;
+                }
+                case "difficult" -> {
+                    enemyAlgorithm = Algorithm.CHECK_ALL_POSSIBLE_POSITIONS;
                     validAnswer = true;
                 }
             }

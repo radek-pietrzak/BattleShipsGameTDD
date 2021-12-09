@@ -106,6 +106,33 @@ public class FleetService {
         return matrix.getMatrix()[y][x] + "." + x + "," + y;
     }
 
+    public static String encodeShipToCoordinates(Ship ship, int x, int y) {
+
+        String symbol = switch (ship) {
+            case CARRIER -> "C";
+            case BATTLESHIP -> "B";
+            case DESTROYER -> "D";
+            case SUBMARINE -> "S";
+            case PATROL_BOAT -> "P";
+        };
+
+        return symbol + "." + x + "," + y;
+    }
+
+    public static int[] decodePositionToCoordinates(String position) {
+
+        if (!ValidationService.isEncodedPositionValid(position))
+            throw new IllegalArgumentException();
+
+        int dot = position.indexOf(".");
+        int comma = position.indexOf(",");
+
+        int x = Integer.parseInt(position.substring(dot + 1, comma));
+        int y = Integer.parseInt(position.substring(comma + 1));
+
+        return new int[]{x, y};
+    }
+
     private static boolean shipIsNotInBounds(List<String> encodedShip) {
 
         AtomicBoolean result = new AtomicBoolean(false);

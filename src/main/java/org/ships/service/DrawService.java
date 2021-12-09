@@ -15,7 +15,6 @@ public class DrawService {
 
     public static List<String> drawPositionOfShip(Ship ship) {
 
-        allPossiblePositions.clear();
         createListOfAllPossiblePositions(ship);
         Random random = new Random();
         int drawnIndex = random.nextInt(allPossiblePositions.size());
@@ -23,8 +22,9 @@ public class DrawService {
         return allPossiblePositions.get(drawnIndex);
     }
 
-    private static void createListOfAllPossiblePositions(Ship ship) {
+    public static void createListOfAllPossiblePositions(Ship ship) {
 
+        allPossiblePositions.clear();
         int shipLength = FleetService.getShipLength(ship);
 
         for (int i = 0; i < 11 - shipLength; i++)

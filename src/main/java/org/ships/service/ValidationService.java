@@ -53,4 +53,9 @@ public class ValidationService {
 
         return true;
     }
+
+    public static boolean isEncodedPositionValid(String position) {
+
+        return position.matches("[CBDSP]+\\.+[0-9]{1},+[0-9]{1}");
+    }
 }

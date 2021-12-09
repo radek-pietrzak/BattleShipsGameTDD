@@ -56,4 +56,27 @@ class ValidationServiceTest {
         assertFalse(ValidationService.isShipSetValid("j10w"));
         assertFalse(ValidationService.isShipSetValid("j10,w"));
     }
+
+    @Test
+    void shouldReturnTrueIfPositionsIsValid() {
+
+        assertTrue(ValidationService.isEncodedPositionValid("C.1,1"));
+        assertTrue(ValidationService.isEncodedPositionValid("B.9,0"));
+        assertTrue(ValidationService.isEncodedPositionValid("D.5,8"));
+        assertTrue(ValidationService.isEncodedPositionValid("S.2,6"));
+        assertTrue(ValidationService.isEncodedPositionValid("P.3,7"));
+    }
+
+    @Test
+    void shouldReturnFalseIfPositionsIsValid() {
+
+        assertFalse(ValidationService.isEncodedPositionValid("C.1,1."));
+        assertFalse(ValidationService.isEncodedPositionValid("B.9,"));
+        assertFalse(ValidationService.isEncodedPositionValid("b.9,1"));
+        assertFalse(ValidationService.isEncodedPositionValid("F.5,8"));
+        assertFalse(ValidationService.isEncodedPositionValid("S2,6"));
+        assertFalse(ValidationService.isEncodedPositionValid("P.03,7"));
+        assertFalse(ValidationService.isEncodedPositionValid("P.3,77"));
+        assertFalse(ValidationService.isEncodedPositionValid("P11"));
+    }
 }

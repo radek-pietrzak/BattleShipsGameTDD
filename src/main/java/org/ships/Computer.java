@@ -1,22 +1,100 @@
 package org.ships;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import org.ships.service.DrawService;
+import org.ships.service.FleetService;
+
+import java.util.*;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Computer {
+
 
     public int[] compShotChoice(Matrix matrix, Algorithm algorithm) {
 
         return switch (algorithm) {
             case TOTALLY_RANDOM -> totallyRandomAlgorithm(matrix);
             case RANDOM_WITH_FINISHING -> randomWithFinishingAlgorithm(matrix);
-            case FINISHING_EMPTY_SURROUND_LVL1 -> finishingEmptySurroundLvl1(matrix);
+            case FINISHING_EMPTY_SURROUND_LVL1 -> finishingEmptySurroundLvl1Algorithm(matrix);
+            case CHECK_ALL_POSSIBLE_POSITIONS -> checkAllPossiblePositionsAlgorithm(matrix);
         };
 
     }
 
-    private int[] finishingEmptySurroundLvl1(Matrix matrix) {
+    private int[] checkAllPossiblePositionsAlgorithm(Matrix matrix) {
+
+        int[] result = finishingAlgorithm(matrix);
+
+        if (result != null)
+            return result;
+
+
+        List<String> badPositions = new LinkedList<>();
+        List<List<String>> allPossiblePositions;
+
+        int count = 5;
+
+        while (count > 1) {
+
+            Ship ship = switch (count) {
+                case 5 -> Ship.CARRIER;
+                case 4 -> Ship.BATTLESHIP;
+                case 3 -> Ship.DESTROYER;
+                case 2 -> Ship.PATROL_BOAT;
+                default -> throw new IllegalStateException("Unexpected value: " + count);
+            };
+
+            DrawService.createListOfAllPossiblePositions(ship);
+            allPossiblePositions = DrawService.getAllPossiblePositions();
+
+            for (int i = 0; i < 10; i++)
+                for (int j = 0; j < 10; j++)
+                    if (matrix.getMatrix()[j][i].contains(".") || matrix.getMatrix()[j][i].contains("X"))
+                        badPositions.add(FleetService.encodeShipToCoordinates(ship, i, j));
+
+            List<List<String>> finalAllPossiblePositions = allPossiblePositions;
+
+            badPositions.forEach(badPosition ->
+                    finalAllPossiblePositions
+                            .removeIf(s ->
+                                    Objects.equals(s.iterator().next(), badPosition)));
+
+            if (!finalAllPossiblePositions.isEmpty()) {
+
+                Map<String, Long> countFrequency = new HashMap<>();
+
+                var allPossiblePositionsFlat = finalAllPossiblePositions.stream()
+                        .flatMap(Collection::stream)
+                        .collect(Collectors.toList());
+
+                allPossiblePositionsFlat
+                        .forEach(s -> countFrequency.put(s, allPossiblePositionsFlat.stream()
+                                .filter(e -> e.equals(s))
+                                .count()));
+
+                var max = Collections.max(countFrequency.values());
+
+                var optionalMostFrequentPosition = countFrequency.entrySet().stream()
+                        .filter(entry -> Objects.equals(entry.getValue(), max))
+                        .findAny()
+                        .map(Map.Entry::getKey);
+
+                if (optionalMostFrequentPosition.isPresent()) {
+
+                    return FleetService.decodePositionToCoordinates(optionalMostFrequentPosition.get());
+
+                }
+
+            }
+
+            count--;
+
+        }
+
+        return emptySurroundLvl1(matrix);
+    }
+
+    private int[] finishingEmptySurroundLvl1Algorithm(Matrix matrix) {
 
         int[] result = finishingAlgorithm(matrix);
 
