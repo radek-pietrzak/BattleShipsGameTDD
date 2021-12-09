@@ -6,19 +6,90 @@ import java.util.Random;
 
 public class Computer {
 
-    private final Random random = new Random();
-
     public int[] compShotChoice(Matrix matrix, Algorithm algorithm) {
 
         return switch (algorithm) {
             case TOTALLY_RANDOM -> totallyRandomAlgorithm(matrix);
             case RANDOM_WITH_FINISHING -> randomWithFinishingAlgorithm(matrix);
-            case EMPTY_SURROUND_FIRST_SHOT -> null;
+            case FINISHING_EMPTY_SURROUND_LVL1 -> finishingEmptySurroundLvl1(matrix);
         };
 
     }
 
+    private int[] finishingEmptySurroundLvl1(Matrix matrix) {
+
+        int[] result = finishingAlgorithm(matrix);
+
+        if (result != null)
+            return result;
+
+        return emptySurroundLvl1(matrix);
+
+    }
+
+    private int[] emptySurroundLvl1(Matrix matrix) {
+
+        int numberOfFreeSpaces = 8;
+
+        List<List<Integer>> shotList = new ArrayList<>();
+
+        while (numberOfFreeSpaces > 0) {
+
+            for (int i = 0; i < 10; i++)
+                for (int j = 0; j < 10; j++)
+                    if (matrix.getMatrix()[j][i].equals(" "))
+                        shotList.add(checkSpacesAround(i, j, matrix, numberOfFreeSpaces));
+
+            shotList.removeIf(List::isEmpty);
+
+            if (shotList.isEmpty())
+                numberOfFreeSpaces--;
+            else
+                break;
+        }
+
+        if (!shotList.isEmpty()) {
+            Random random = new Random();
+            int shotIndex = random.nextInt(shotList.size());
+            var shot = shotList.get(shotIndex);
+
+            return new int[]{shot.get(0), shot.get(1)};
+        } else
+            return totallyRandomAlgorithm(matrix);
+    }
+
+    private List<Integer> checkSpacesAround(int x, int y, Matrix matrix, int numberOfFreeSpaces) {
+
+        List<Integer> coordinates = new ArrayList<>();
+
+        int count = 0;
+
+        for (int i = -1; i < 2; i++)
+            for (int j = -1; j < 2; j++)
+                if (x + i < 10 && x + i >= 0 && y + j < 10 && y + j >= 0)
+                    if (!(x + i == x && y + j == y))
+                        if (matrix.getMatrix()[y + j][x + i].equals(" "))
+                            count++;
+
+        if (count == numberOfFreeSpaces) {
+            coordinates.add(x);
+            coordinates.add(y);
+        }
+
+        return coordinates;
+
+    }
+
+
     private int[] randomWithFinishingAlgorithm(Matrix matrix) {
+
+        int[] result = finishingAlgorithm(matrix);
+        if (result != null) return result;
+
+        return totallyRandomAlgorithm(matrix);
+    }
+
+    private int[] finishingAlgorithm(Matrix matrix) {
 
         for (int i = 0; i < 10; i++)
             for (int j = 0; j < 10; j++)
@@ -27,8 +98,7 @@ public class Computer {
                     if (result != null)
                         return result;
                 }
-
-        return totallyRandomAlgorithm(matrix);
+        return null;
     }
 
     private int[] checkSurroundForFirstShot(Matrix matrix, int x, int y) {
@@ -100,6 +170,8 @@ public class Computer {
 
 
     private int[] totallyRandomAlgorithm(Matrix matrix) {
+
+        Random random = new Random();
 
         int x;
         int y;

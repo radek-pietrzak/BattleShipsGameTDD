@@ -102,15 +102,22 @@ public class Game {
         String input;
         while (!validAnswer) {
 
-            System.out.println("Choose ally difficulty: \"very easy\", \"easy\"");
+            System.out.println("Choose ally difficulty: \"very easy\", \"easy\", \"medium\"");
             input = scanner.nextLine();
 
-            if (input.equals("very easy")) {
-                validAnswer = true;
-                allyAlgorithm = Algorithm.TOTALLY_RANDOM;
-            } else if (input.equals("easy")) {
-                validAnswer = true;
-                allyAlgorithm = Algorithm.RANDOM_WITH_FINISHING;
+            switch (input) {
+                case "very easy" -> {
+                    allyAlgorithm = Algorithm.TOTALLY_RANDOM;
+                    validAnswer = true;
+                }
+                case "easy" -> {
+                    allyAlgorithm = Algorithm.RANDOM_WITH_FINISHING;
+                    validAnswer = true;
+                }
+                case "medium" -> {
+                    allyAlgorithm = Algorithm.FINISHING_EMPTY_SURROUND_LVL1;
+                    validAnswer = true;
+                }
             }
         }
     }
@@ -131,27 +138,32 @@ public class Game {
                 autoSetGoodAnswer = true;
         }
 
+
     }
 
     void chooseDifficulty() {
 
-        boolean badAnswer = true;
+        boolean validAnswer = false;
 
         Scanner scanner = new Scanner(System.in);
 
-        while (badAnswer) {
+        while (!validAnswer) {
 
-            System.out.println("Choose enemy difficulty: \"very easy\", \"easy\"");
+            System.out.println("Choose enemy difficulty: \"very easy\", \"easy\", \"medium\"");
             String input = scanner.nextLine();
 
             switch (input) {
                 case "very easy" -> {
                     enemyAlgorithm = Algorithm.TOTALLY_RANDOM;
-                    badAnswer = false;
+                    validAnswer = true;
                 }
                 case "easy" -> {
                     enemyAlgorithm = Algorithm.RANDOM_WITH_FINISHING;
-                    badAnswer = false;
+                    validAnswer = true;
+                }
+                case "medium" -> {
+                    enemyAlgorithm = Algorithm.FINISHING_EMPTY_SURROUND_LVL1;
+                    validAnswer = true;
                 }
             }
         }

@@ -134,4 +134,70 @@ class ComputerTest {
 
     }
 
+    @Test
+    void finishingEmptySurroundLvl1AlgorithmShouldFinishAllHits() {
+
+        //given
+        Algorithm algorithm = Algorithm.FINISHING_EMPTY_SURROUND_LVL1;
+
+        matrix.addToMatrix(1, 1, "X");
+        matrix.addToMatrix(4, 5, "X");
+
+        String[][] result = {
+                {" ", ".", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {".", "X", ".", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", ".", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", ".", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", ".", "X", ".", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", ".", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",},
+                {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ",}
+        };
+
+        //when
+        for (int i = 0; i < 8; i++) {
+            int[] choice = computer.compShotChoice(matrix, algorithm);
+            matrix.addToMatrix(choice[0], choice[1], ".");
+        }
+
+        //then
+        assertThat(matrix.getMatrix(), equalTo(result));
+
+    }
+
+    @Test
+    void finishingEmptySurroundLvl1AlgorithmShouldFillAllMatrixWithDots() {
+
+        //given
+        Algorithm algorithm = Algorithm.FINISHING_EMPTY_SURROUND_LVL1;
+
+        matrix.addToMatrix(1, 1, "X");
+        matrix.addToMatrix(4, 5, "X");
+
+        String[][] result = {
+                {".", ".", ".", ".", ".", ".", ".", ".", ".", ".",},
+                {".", "X", ".", ".", ".", ".", ".", ".", ".", ".",},
+                {".", ".", ".", ".", ".", ".", ".", ".", ".", ".",},
+                {".", ".", ".", ".", ".", ".", ".", ".", ".", ".",},
+                {".", ".", ".", ".", ".", ".", ".", ".", ".", ".",},
+                {".", ".", ".", ".", "X", ".", ".", ".", ".", ".",},
+                {".", ".", ".", ".", ".", ".", ".", ".", ".", ".",},
+                {".", ".", ".", ".", ".", ".", ".", ".", ".", ".",},
+                {".", ".", ".", ".", ".", ".", ".", ".", ".", ".",},
+                {".", ".", ".", ".", ".", ".", ".", ".", ".", ".",}
+        };
+
+        //when
+        for (int i = 0; i < 98; i++) {
+            int[] choice = computer.compShotChoice(matrix, algorithm);
+            matrix.addToMatrix(choice[0], choice[1], ".");
+        }
+
+        //then
+        assertThat(matrix.getMatrix(), equalTo(result));
+
+    }
+
 }
