@@ -227,7 +227,7 @@ public class CompVsCompTest {
         int countAllyWins = 0;
         int countEnemyWins = 0;
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 1; i++) {
 
             Game game = spy(Game.class);
 
@@ -238,8 +238,8 @@ public class CompVsCompTest {
 
             game.setCompVsComp(true);
             game.setAutoSetAllyFleet(true);
-            game.setEnemyAlgorithm(Algorithm.CHECK_ALL_POSSIBLE_POSITIONS);
-            game.setAllyAlgorithm(Algorithm.FINISHING_EMPTY_SURROUND_LVL1);
+            game.setEnemyAlgorithm(Algorithm.FINISHING_EMPTY_SURROUND_LVL1);
+            game.setAllyAlgorithm(Algorithm.CHECK_ALL_POSSIBLE_POSITIONS);
 
             game.startGame();
 

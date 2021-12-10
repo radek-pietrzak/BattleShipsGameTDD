@@ -5,6 +5,7 @@ import org.ships.service.FleetService;
 
 import java.util.*;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Computer {
@@ -44,8 +45,7 @@ public class Computer {
                 default -> throw new IllegalStateException("Unexpected value: " + count);
             };
 
-            DrawService.createListOfAllPossiblePositions(ship);
-            allPossiblePositions = DrawService.getAllPossiblePositions();
+            allPossiblePositions = DrawService.createListOfAllPossiblePositions(ship);
 
             for (int i = 0; i < 10; i++)
                 for (int j = 0; j < 10; j++)
@@ -53,38 +53,34 @@ public class Computer {
                         badPositions.add(FleetService.encodeShipToCoordinates(ship, i, j));
 
             List<List<String>> finalAllPossiblePositions = allPossiblePositions;
+            badPositions.forEach(bad -> finalAllPossiblePositions
+                    .removeIf(s -> s.stream()
+                            .anyMatch(e -> e.equals(bad))));
 
-            badPositions.forEach(badPosition ->
-                    finalAllPossiblePositions
-                            .removeIf(s ->
-                                    Objects.equals(s.iterator().next(), badPosition)));
+            List<String> finalAllPossiblePositionsFlat = finalAllPossiblePositions.stream()
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
 
-            if (!finalAllPossiblePositions.isEmpty()) {
+            if (!finalAllPossiblePositionsFlat.isEmpty()) {
 
-                Map<String, Long> countFrequency = new HashMap<>();
+                Map<String, Long> countFrequency = finalAllPossiblePositionsFlat.stream()
+                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-                var allPossiblePositionsFlat = finalAllPossiblePositions.stream()
-                        .flatMap(Collection::stream)
+                Long max = Collections.max(countFrequency.values());
+
+                List<String> mostFrequentPositions = countFrequency.entrySet().stream()
+                        .filter(entry -> Objects.equals(entry.getValue(), max))
+                        .peek(System.out::println)
+                        .map(Map.Entry::getKey)
                         .collect(Collectors.toList());
 
-                allPossiblePositionsFlat
-                        .forEach(s -> countFrequency.put(s, allPossiblePositionsFlat.stream()
-                                .filter(e -> e.equals(s))
-                                .count()));
+                System.out.println("mostFrequentPositions: " + mostFrequentPositions);
 
-                var max = Collections.max(countFrequency.values());
+                Random random = new Random();
+                int drawnIndex = random.nextInt(mostFrequentPositions.size());
+                String drawnPosition = mostFrequentPositions.get(drawnIndex);
 
-                var optionalMostFrequentPosition = countFrequency.entrySet().stream()
-                        .filter(entry -> Objects.equals(entry.getValue(), max))
-                        .findAny()
-                        .map(Map.Entry::getKey);
-
-                if (optionalMostFrequentPosition.isPresent()) {
-
-                    return FleetService.decodePositionToCoordinates(optionalMostFrequentPosition.get());
-
-                }
-
+                return FleetService.decodePositionToCoordinates(drawnPosition);
             }
 
             count--;
