@@ -102,24 +102,29 @@ public class Game {
         String input;
         while (!validAnswer) {
 
-            System.out.println("Choose ally difficulty: \"very easy\", \"easy\", \"medium\", \"difficult\"");
+            System.out.println("Choose ally difficulty: very easy - \"ve\", easy - \"e\", medium - \"m\", difficult - \"d\", very difficult - \"vd\"");
             input = scanner.nextLine();
 
             switch (input) {
-                case "very easy" -> {
+                case "ve" -> {
                     allyAlgorithm = Algorithm.TOTALLY_RANDOM;
                     validAnswer = true;
                 }
-                case "easy" -> {
+                case "e" -> {
                     allyAlgorithm = Algorithm.RANDOM_WITH_FINISHING;
                     validAnswer = true;
                 }
-                case "medium" -> {
+                case "m" -> {
                     allyAlgorithm = Algorithm.FINISHING_EMPTY_SURROUND_LVL1;
                     validAnswer = true;
                 }
-                case "difficult" -> {
+                case "d" -> {
                     allyAlgorithm = Algorithm.CHECK_ALL_POSSIBLE_POSITIONS;
+                    validAnswer = true;
+                }
+
+                case "vd" -> {
+                    allyAlgorithm = Algorithm.ALL_POSS_POS_WITH_OFFSET;
                     validAnswer = true;
                 }
             }
@@ -153,24 +158,28 @@ public class Game {
 
         while (!validAnswer) {
 
-            System.out.println("Choose enemy difficulty: \"very easy\", \"easy\", \"medium\", \"difficult\"");
+            System.out.println("Choose enemy difficulty: very easy - \"ve\", easy - \"e\", medium - \"m\", difficult - \"d\", very difficult - \"vd\"");
             String input = scanner.nextLine();
 
             switch (input) {
-                case "very easy" -> {
+                case "ve" -> {
                     enemyAlgorithm = Algorithm.TOTALLY_RANDOM;
                     validAnswer = true;
                 }
-                case "easy" -> {
+                case "e" -> {
                     enemyAlgorithm = Algorithm.RANDOM_WITH_FINISHING;
                     validAnswer = true;
                 }
-                case "medium" -> {
+                case "m" -> {
                     enemyAlgorithm = Algorithm.FINISHING_EMPTY_SURROUND_LVL1;
                     validAnswer = true;
                 }
-                case "difficult" -> {
+                case "d" -> {
                     enemyAlgorithm = Algorithm.CHECK_ALL_POSSIBLE_POSITIONS;
+                    validAnswer = true;
+                }
+                case "vd" -> {
+                    enemyAlgorithm = Algorithm.ALL_POSS_POS_WITH_OFFSET;
                     validAnswer = true;
                 }
             }
@@ -258,7 +267,7 @@ public class Game {
 
         String shot = ShootService.shootComp(matrixEnemy, x, y);
 
-        if (shot.equals("Computer missed."))
+        if (shot.contains("Computer missed"))
             System.out.println(shot);
 
         else {
@@ -271,7 +280,7 @@ public class Game {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
         String shot = ShootService.shoot(matrixEnemy, input);
-        if (shot.equals("Incorrect coordinates") || shot.equals("Missed."))
+        if (shot.equals("Incorrect coordinates") || shot.contains("Missed"))
             System.out.println(shot);
         else {
             enemyFleet.removeShipFromListAfterHit(shot);
@@ -289,7 +298,7 @@ public class Game {
 
         String shot = ShootService.shootComp(matrixAlly, x, y);
 
-        if (shot.equals("Computer missed."))
+        if (shot.contains("Computer missed"))
             System.out.println(shot);
 
         else {

@@ -25,7 +25,7 @@ public class ShootService {
         if (!isHitInCoordinates(x, y, matrix))
             matrix.addToMatrix(x, y, ".");
 
-        return "Missed.";
+        return "Missed: " + CoordinatesService.getCoordinatesFromXY(x, y);
     }
 
     public static String shootComp(Matrix matrix, int x, int y) {
@@ -40,7 +40,7 @@ public class ShootService {
         if (!isHitInCoordinates(x, y, matrix))
             matrix.addToMatrix(x, y, ".");
 
-        return "Computer missed.";
+        return "Computer missed: " + CoordinatesService.getCoordinatesFromXY(x, y);
     }
 
 

@@ -17,7 +17,7 @@ public class CompVsCompTest {
         int countAllyWins = 0;
         int countEnemyWins = 0;
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10000; i++) {
 
             Game game = spy(Game.class);
 
@@ -52,7 +52,7 @@ public class CompVsCompTest {
         int countAllyWins = 0;
         int countEnemyWins = 0;
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10000; i++) {
 
             Game game = spy(Game.class);
 
@@ -87,7 +87,7 @@ public class CompVsCompTest {
         int countAllyWins = 0;
         int countEnemyWins = 0;
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10000; i++) {
 
             Game game = spy(Game.class);
 
@@ -122,7 +122,7 @@ public class CompVsCompTest {
         int countAllyWins = 0;
         int countEnemyWins = 0;
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10000; i++) {
 
             Game game = spy(Game.class);
 
@@ -157,7 +157,7 @@ public class CompVsCompTest {
         int countAllyWins = 0;
         int countEnemyWins = 0;
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10000; i++) {
 
             Game game = spy(Game.class);
 
@@ -192,7 +192,7 @@ public class CompVsCompTest {
         int countAllyWins = 0;
         int countEnemyWins = 0;
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10000; i++) {
 
             Game game = spy(Game.class);
 
@@ -227,7 +227,7 @@ public class CompVsCompTest {
         int countAllyWins = 0;
         int countEnemyWins = 0;
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10000; i++) {
 
             Game game = spy(Game.class);
 
@@ -240,6 +240,76 @@ public class CompVsCompTest {
             game.setAutoSetAllyFleet(true);
             game.setEnemyAlgorithm(Algorithm.FINISHING_EMPTY_SURROUND_LVL1);
             game.setAllyAlgorithm(Algorithm.CHECK_ALL_POSSIBLE_POSITIONS);
+
+            game.startGame();
+
+            if (game.getEnemyFleet().getEncodedFleet().isEmpty())
+                countAllyWins += 1;
+            if (game.getAllyFleet().getEncodedFleet().isEmpty())
+                countEnemyWins += 1;
+
+        }
+
+        //then
+        System.out.println("Ally wins: " + countAllyWins);
+        System.out.println("Enemy wins: " + countEnemyWins);
+
+    }
+
+    @Test
+    void allPossiblePositionsWithOffsetVsCheckAllPossiblePositions() {
+
+        int countAllyWins = 0;
+        int countEnemyWins = 0;
+
+        for (int i = 0; i < 10000; i++) {
+
+            Game game = spy(Game.class);
+
+            willDoNothing().given(game).chooseManualOrAutoSetFleet();
+            willDoNothing().given(game).humanOrComputer();
+            willDoNothing().given(game).chooseDifficulty();
+            willDoNothing().given(game).chooseAllyDifficulty();
+
+            game.setCompVsComp(true);
+            game.setAutoSetAllyFleet(true);
+            game.setEnemyAlgorithm(Algorithm.CHECK_ALL_POSSIBLE_POSITIONS);
+            game.setAllyAlgorithm(Algorithm.ALL_POSS_POS_WITH_OFFSET);
+
+            game.startGame();
+
+            if (game.getEnemyFleet().getEncodedFleet().isEmpty())
+                countAllyWins += 1;
+            if (game.getAllyFleet().getEncodedFleet().isEmpty())
+                countEnemyWins += 1;
+
+        }
+
+        //then
+        System.out.println("Ally wins: " + countAllyWins);
+        System.out.println("Enemy wins: " + countEnemyWins);
+
+    }
+
+    @Test
+    void allPossiblePositionsWithOffsetVsAllPossiblePositionsWithOffset() {
+
+        int countAllyWins = 0;
+        int countEnemyWins = 0;
+
+        for (int i = 0; i < 10000; i++) {
+
+            Game game = spy(Game.class);
+
+            willDoNothing().given(game).chooseManualOrAutoSetFleet();
+            willDoNothing().given(game).humanOrComputer();
+            willDoNothing().given(game).chooseDifficulty();
+            willDoNothing().given(game).chooseAllyDifficulty();
+
+            game.setCompVsComp(true);
+            game.setAutoSetAllyFleet(true);
+            game.setEnemyAlgorithm(Algorithm.ALL_POSS_POS_WITH_OFFSET);
+            game.setAllyAlgorithm(Algorithm.ALL_POSS_POS_WITH_OFFSET);
 
             game.startGame();
 

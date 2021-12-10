@@ -1,7 +1,6 @@
 package org.ships;
 
-import org.ships.service.DrawService;
-import org.ships.service.FleetService;
+import org.ships.service.*;
 
 import java.util.*;
 import java.util.Map;
@@ -18,8 +17,31 @@ public class Computer {
             case RANDOM_WITH_FINISHING -> randomWithFinishingAlgorithm(matrix);
             case FINISHING_EMPTY_SURROUND_LVL1 -> finishingEmptySurroundLvl1Algorithm(matrix);
             case CHECK_ALL_POSSIBLE_POSITIONS -> checkAllPossiblePositionsAlgorithm(matrix);
+            case ALL_POSS_POS_WITH_OFFSET -> allPossiblePositionsWithOffsetAlgorithm(matrix);
         };
 
+    }
+
+    private int[] allPossiblePositionsWithOffsetAlgorithm(Matrix matrix) {
+
+        int[] result = finishingAlgorithm(matrix);
+
+        if (result != null)
+            return result;
+
+        int count = 5;
+
+        while (count > 1) {
+
+            int[] drawnPosition = drawMostPossiblePosition(matrix, count, true);
+            if (drawnPosition != null)
+                return drawnPosition;
+
+            count--;
+
+        }
+
+        return emptySurroundLvl1(matrix);
     }
 
     private int[] checkAllPossiblePositionsAlgorithm(Matrix matrix) {
@@ -29,65 +51,143 @@ public class Computer {
         if (result != null)
             return result;
 
-
-        List<String> badPositions = new LinkedList<>();
-        List<List<String>> allPossiblePositions;
-
         int count = 5;
 
         while (count > 1) {
 
-            Ship ship = switch (count) {
-                case 5 -> Ship.CARRIER;
-                case 4 -> Ship.BATTLESHIP;
-                case 3 -> Ship.DESTROYER;
-                case 2 -> Ship.PATROL_BOAT;
-                default -> throw new IllegalStateException("Unexpected value: " + count);
-            };
-
-            allPossiblePositions = DrawService.createListOfAllPossiblePositions(ship);
-
-            for (int i = 0; i < 10; i++)
-                for (int j = 0; j < 10; j++)
-                    if (matrix.getMatrix()[j][i].contains(".") || matrix.getMatrix()[j][i].contains("X"))
-                        badPositions.add(FleetService.encodeShipToCoordinates(ship, i, j));
-
-            List<List<String>> finalAllPossiblePositions = allPossiblePositions;
-            badPositions.forEach(bad -> finalAllPossiblePositions
-                    .removeIf(s -> s.stream()
-                            .anyMatch(e -> e.equals(bad))));
-
-            List<String> finalAllPossiblePositionsFlat = finalAllPossiblePositions.stream()
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
-
-            if (!finalAllPossiblePositionsFlat.isEmpty()) {
-
-                Map<String, Long> countFrequency = finalAllPossiblePositionsFlat.stream()
-                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-
-                Long max = Collections.max(countFrequency.values());
-
-                List<String> mostFrequentPositions = countFrequency.entrySet().stream()
-                        .filter(entry -> Objects.equals(entry.getValue(), max))
-                        .peek(System.out::println)
-                        .map(Map.Entry::getKey)
-                        .collect(Collectors.toList());
-
-                System.out.println("mostFrequentPositions: " + mostFrequentPositions);
-
-                Random random = new Random();
-                int drawnIndex = random.nextInt(mostFrequentPositions.size());
-                String drawnPosition = mostFrequentPositions.get(drawnIndex);
-
-                return FleetService.decodePositionToCoordinates(drawnPosition);
-            }
+            int[] drawnPosition = drawMostPossiblePosition(matrix, count, false);
+            if (drawnPosition != null)
+                return drawnPosition;
 
             count--;
 
         }
 
         return emptySurroundLvl1(matrix);
+    }
+
+    private int[] drawMostPossiblePosition(Matrix matrix, int count, boolean checkOffset) {
+
+        List<List<String>> allPossiblePositions;
+        Ship ship = switch (count) {
+            case 5 -> Ship.CARRIER;
+            case 4 -> Ship.BATTLESHIP;
+            case 3 -> Ship.DESTROYER;
+            case 2 -> Ship.PATROL_BOAT;
+            default -> throw new IllegalStateException("Unexpected value: " + count);
+        };
+
+        allPossiblePositions = DrawService.createListOfAllPossiblePositions(ship);
+        List<String> badPositions = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++)
+            for (int j = 0; j < 10; j++)
+                if (matrix.getMatrix()[j][i].contains(".") || matrix.getMatrix()[j][i].contains("X"))
+                    badPositions.add(FleetService.encodeShipToCoordinates(ship, i, j));
+
+        List<List<String>> finalAllPossiblePositions = allPossiblePositions;
+        badPositions.forEach(bad -> finalAllPossiblePositions
+                .removeIf(s -> s.stream()
+                        .anyMatch(e -> e.equals(bad))));
+
+        List<String> finalAllPossiblePositionsFlat = finalAllPossiblePositions.stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+
+        if (!finalAllPossiblePositionsFlat.isEmpty()) {
+
+            Map<String, Long> countFrequency = finalAllPossiblePositionsFlat.stream()
+                    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+            Long max = Collections.max(countFrequency.values());
+
+            List<String> mostFrequentPositions = countFrequency.entrySet().stream()
+                    .filter(entry -> Objects.equals(entry.getValue(), max))
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
+
+            if (checkOffset) {
+
+                Map<String, Long> positionsWithNumberOfEmptySpacesAround = new HashMap<>();
+
+                mostFrequentPositions.forEach(position -> {
+                    if (!ValidationService.isEncodedPositionValid(position))
+                        throw new IllegalArgumentException();
+
+                    int dot = position.indexOf(".");
+                    int comma = position.indexOf(",");
+
+                    int x = Integer.parseInt(position.substring(dot + 1, comma));
+                    int y = Integer.parseInt(position.substring(comma + 1));
+
+                    Long emptySpaces = 0L;
+
+                    if (x + 1 < 10) {
+
+                        if (matrix.getMatrix()[y][x + 1].equals(" "))
+                            emptySpaces++;
+
+                        if (y + 1 < 10)
+                            if (matrix.getMatrix()[y + 1][x + 1].equals(" "))
+                                emptySpaces++;
+
+                        if (y - 1 >= 0)
+                            if (matrix.getMatrix()[y - 1][x + 1].equals(" "))
+                                emptySpaces++;
+                    }
+
+                    if (x - 1 >= 0) {
+                        if (matrix.getMatrix()[y][x - 1].equals(" "))
+                            emptySpaces++;
+
+                        if (y + 1 < 10)
+                            if (matrix.getMatrix()[y + 1][x - 1].equals(" "))
+                                emptySpaces++;
+
+                        if (y - 1 >= 0)
+                            if (matrix.getMatrix()[y - 1][x - 1].equals(" "))
+                                emptySpaces++;
+
+                    }
+
+                    if (y + 1 < 10)
+                        if (matrix.getMatrix()[y + 1][x].equals(" "))
+                            emptySpaces++;
+
+                    if (y - 1 > 0)
+                        if (matrix.getMatrix()[y - 1][x].equals(" "))
+                            emptySpaces++;
+
+                    positionsWithNumberOfEmptySpacesAround.put(position, emptySpaces);
+
+                });
+
+                Long maxSpaces = Collections.max(positionsWithNumberOfEmptySpacesAround.values());
+
+                List<String> bestPositions = positionsWithNumberOfEmptySpacesAround.entrySet().stream()
+                        .filter(entry -> Objects.equals(entry.getValue(), maxSpaces))
+                        .map(Map.Entry::getKey)
+                        .collect(Collectors.toList());
+
+                if (!bestPositions.isEmpty()) {
+
+                    Random random = new Random();
+                    int drawnIndex = random.nextInt(bestPositions.size());
+                    String drawnPosition = bestPositions.get(drawnIndex);
+
+                    return FleetService.decodePositionToCoordinates(drawnPosition);
+                }
+
+            }
+
+            Random random = new Random();
+            int drawnIndex = random.nextInt(mostFrequentPositions.size());
+            String drawnPosition = mostFrequentPositions.get(drawnIndex);
+
+            return FleetService.decodePositionToCoordinates(drawnPosition);
+        }
+
+        return null;
     }
 
     private int[] finishingEmptySurroundLvl1Algorithm(Matrix matrix) {

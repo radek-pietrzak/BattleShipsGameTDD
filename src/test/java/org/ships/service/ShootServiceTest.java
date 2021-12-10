@@ -6,6 +6,8 @@ import org.ships.Matrix;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.spy;
@@ -55,7 +57,6 @@ class ShootServiceTest {
 
         //given
         Matrix matrix = spy(Matrix.class);
-        String result = "Missed.";
 
         String[][] givenMatrix = {
                 {"!", "!", "!", "!", "!", " ", " ", " ", " ", " ",},
@@ -74,9 +75,9 @@ class ShootServiceTest {
 
         //when
         //then
-        assertEquals(result, ShootService.shoot(matrix, "b1"));
-        assertEquals(result, ShootService.shoot(matrix, "a10"));
-        assertEquals(result, ShootService.shoot(matrix, "g5"));
+        assertThat(ShootService.shoot(matrix, "b1"), equalTo("Missed: b1"));
+        assertThat(ShootService.shoot(matrix, "a10"), equalTo("Missed: a10"));
+        assertThat(ShootService.shoot(matrix, "g5"), equalTo("Missed: g5"));
 
     }
 
@@ -225,7 +226,6 @@ class ShootServiceTest {
 
         //given
         Matrix matrix = spy(Matrix.class);
-        String result = "Computer missed.";
 
         String[][] givenMatrix = {
                 {"!", "!", "!", "!", "!", " ", " ", " ", " ", " ",},
@@ -244,9 +244,9 @@ class ShootServiceTest {
 
         //when
         //then
-        assertEquals(result, ShootService.shootComp(matrix, 0,0));
-        assertEquals(result, ShootService.shootComp(matrix, 0,9));
-        assertEquals(result, ShootService.shootComp(matrix, 6,4));
+        assertThat(ShootService.shootComp(matrix, 0,0), equalTo("Computer missed: a1"));
+        assertThat(ShootService.shootComp(matrix, 0,9), equalTo("Computer missed: a10"));
+        assertThat(ShootService.shootComp(matrix, 6,4), equalTo("Computer missed: g5"));
 
     }
 
@@ -255,7 +255,6 @@ class ShootServiceTest {
 
         //given
         Matrix matrix = spy(Matrix.class);
-        String result = "Computer missed.";
 
         String[][] givenMatrix = {
                 {"!", "!", "!", "!", "!", " ", " ", " ", " ", " ",},

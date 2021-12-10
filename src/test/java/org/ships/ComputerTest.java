@@ -276,5 +276,48 @@ class ComputerTest {
 
     }
 
+    @Test
+    void allPossiblePositionsWithOffsetAlgorithmShouldFillAllMatrixWithDots() {
+
+        //given
+        Algorithm algorithm = Algorithm.ALL_POSS_POS_WITH_OFFSET;
+
+        matrix.addToMatrix(1, 1, "X");
+        matrix.addToMatrix(4, 5, "X");
+
+        matrix.addToMatrix(0,0, ".");
+        matrix.addToMatrix(2,0, ".");
+        matrix.addToMatrix(0,2, ".");
+        matrix.addToMatrix(2,2, ".");
+
+        matrix.addToMatrix(3,4, ".");
+        matrix.addToMatrix(5,4, ".");
+        matrix.addToMatrix(3,6, ".");
+        matrix.addToMatrix(5,6, ".");
+
+        String[][] result = {
+                {".", ".", ".", ".", ".", ".", ".", ".", ".", ".",},
+                {".", "X", ".", ".", ".", ".", ".", ".", ".", ".",},
+                {".", ".", ".", ".", ".", ".", ".", ".", ".", ".",},
+                {".", ".", ".", ".", ".", ".", ".", ".", ".", ".",},
+                {".", ".", ".", ".", ".", ".", ".", ".", ".", ".",},
+                {".", ".", ".", ".", "X", ".", ".", ".", ".", ".",},
+                {".", ".", ".", ".", ".", ".", ".", ".", ".", ".",},
+                {".", ".", ".", ".", ".", ".", ".", ".", ".", ".",},
+                {".", ".", ".", ".", ".", ".", ".", ".", ".", ".",},
+                {".", ".", ".", ".", ".", ".", ".", ".", ".", ".",}
+        };
+
+        //when
+        for (int i = 0; i < 90; i++) {
+            int[] choice = computer.compShotChoice(matrix, algorithm);
+            matrix.addToMatrix(choice[0], choice[1], ".");
+        }
+
+        //then
+        assertThat(matrix.getMatrix(), equalTo(result));
+
+    }
+
 
 }
